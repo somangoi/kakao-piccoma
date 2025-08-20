@@ -1,9 +1,14 @@
 import { useProducts } from '@/entities/product/repository';
 import { useSalesMap } from '@/entities/sales/hooks/useSalesMap';
 import { useSalesWithWorker } from '@/entities/sales/repository';
+import GenreFilter from '@/features/filter/GenreFilter';
+import TimeFilter from '@/features/filter/TimeFilter';
+import { useSyncFiltersWithUrl } from '@/shared/hooks/useSyncFiltersWithUrl';
 import { useEffect } from 'react';
 
 const DashboardPage = () => {
+  useSyncFiltersWithUrl();
+
   const { data: products } = useProducts();
   const { data: sales } = useSalesWithWorker();
   const { data: salesMap } = useSalesMap();
@@ -15,6 +20,9 @@ const DashboardPage = () => {
   return (
     <div>
       <div>
+        <TimeFilter />
+        <br />
+        <GenreFilter />
         <h1>🧪 Test Page</h1>
 
         <h2>✅ Products</h2>
