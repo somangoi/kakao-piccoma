@@ -1,12 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { adaptSalesDto } from './adapter';
+import type { SalesDto } from './dto';
 import type { Sales } from './model';
 
 // 웹워커 중복 실행 방지를 위한 전역 상태
 let isWorkerRunning = false;
 
 export function useSalesWithWorker() {
-  return useQuery({
+  return useQuery<Sales[]>({
     queryKey: ['sales-worker'],
     staleTime: 5 * 60 * 1000, // 5분간 캐시 유지
     gcTime: 10 * 60 * 1000, // 10분간 메모리 보관
@@ -22,32 +23,27 @@ export function useSalesWithWorker() {
         isWorkerRunning = true;
         console.log('🚀 Starting worker...');
 
-        let accumulatedSales: Sales[] = [];
-
         const worker = new Worker(
           new URL('../../shared/workers/ingest.worker.ts', import.meta.url),
           { type: 'module' }
         );
 
         worker.onmessage = (e) => {
-          if (e.data.type === 'cube-final') {
-            console.log(
-              '✅ Worker completed! Total:',
-              e.data.payload.totalProcessed
-            );
-            resolve(accumulatedSales); // 누적된 전체 데이터 반환
+          const { type, payload } = e.data;
+
+          if (type === 'cube-final') {
+            console.log('✅ Worker completed! Processing final data');
+            const text = new TextDecoder().decode(payload);
+            const salesData: SalesDto[] = JSON.parse(text);
+            const adaptedSales: Sales[] = salesData.map(adaptSalesDto);
+            resolve(adaptedSales);
             worker.terminate();
             isWorkerRunning = false;
-          } else if (e.data.type === 'cube-partial') {
-            const { batch, totalProcessed } = e.data.payload;
-            const adaptedBatch = batch.map(adaptSalesDto);
-            accumulatedSales.push(...adaptedBatch);
-            console.log(
-              `📊 Progress: ${accumulatedSales.length}/${totalProcessed} loaded (batch: ${batch.length})`
-            );
-          } else if (e.data.type === 'error') {
-            console.error('❌ Worker error:', e.data.payload);
-            reject(new Error(e.data.payload));
+          }
+
+          if (type === 'error') {
+            console.error('❌ Worker error:', payload);
+            reject(new Error(payload));
             worker.terminate();
             isWorkerRunning = false;
           }
