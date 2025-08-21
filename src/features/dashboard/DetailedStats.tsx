@@ -2,6 +2,7 @@ import { Box, Card, CardContent, Typography, Chip } from '@mui/material';
 import { useMemo } from 'react';
 import type { JoinedRowWithDerived } from '@/entities/joined/model';
 import { useTotals } from '@/shared/hooks/useTotals';
+import { useGenreStats } from '@/shared/hooks/useGenreStats';
 
 interface DetailedStatsProps {
   filteredRows: JoinedRowWithDerived[];
@@ -9,25 +10,13 @@ interface DetailedStatsProps {
 
 export const DetailedStats = ({ filteredRows }: DetailedStatsProps) => {
   const totals = useTotals(filteredRows);
+  const genreStats = useGenreStats(filteredRows);
 
   const topGenres = useMemo(() => {
-    const genreStats = filteredRows.reduce(
-      (acc, row) => {
-        const genre = row.genre;
-        if (!acc[genre]) {
-          acc[genre] = { count: 0, sales: 0 };
-        }
-        acc[genre].count += 1;
-        acc[genre].sales += row.derivedTotals.totalSales;
-        return acc;
-      },
-      {} as Record<string, { count: number; sales: number }>
-    );
-
     return Object.entries(genreStats)
       .sort(([, a], [, b]) => b.sales - a.sales)
       .slice(0, 5);
-  }, [filteredRows]);
+  }, [genreStats]);
 
   return (
     <Box

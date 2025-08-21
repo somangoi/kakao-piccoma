@@ -8,6 +8,7 @@ import { TimeFilter } from '@/features/filter/ui/TimeFilter';
 import { FilteredSummary } from '@/features/dashboard/FilteredSummary';
 import { DetailedStats } from '@/features/dashboard/DetailedStats';
 import { SalesChart } from '@/features/dashboard/SalesChart';
+import { GenrePieChart } from '@/features/dashboard/GenrePieChart';
 
 const DashboardPage = () => {
   useSyncFiltersWithUrl();
@@ -37,7 +38,7 @@ const DashboardPage = () => {
         <Box
           display="flex"
           gap={3}
-          sx={{ flexDirection: { lg: 'row' }, flexWrap: 'wrap' }}
+          sx={{ flexDirection: { lg: 'row' }, flexWrap: 'wrap', mb: 3 }}
         >
           <Box sx={{ flex: 1, minWidth: '300px' }}>
             <DetailedStats filteredRows={filteredRows} />
@@ -45,6 +46,11 @@ const DashboardPage = () => {
           <Box sx={{ flex: 2, minWidth: '400px' }}>
             <SalesChart filteredRows={filteredRows} />
           </Box>
+        </Box>
+
+        {/* 파이 차트 */}
+        <Box>
+          <GenrePieChart filteredRows={filteredRows} />
         </Box>
       </Box>
     </Container>
