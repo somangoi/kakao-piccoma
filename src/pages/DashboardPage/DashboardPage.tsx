@@ -1,37 +1,37 @@
-import { useEffect } from 'react';
+import { Box, Container, Paper } from '@mui/material';
 import { useJoinedRows } from '@/entities/joined/useJoinedRows';
 import { useProducts } from '@/entities/product/repository';
+import { useIndexedFilteredRows } from '@/entities/joined/selectors/useIndexedFilteredRows';
 import { useSyncFiltersWithUrl } from '@/features/filter/lib/useSyncFiltersWithUrl';
 import { GenreFilter } from '@/features/filter/ui/GenreFilter';
 import { TimeFilter } from '@/features/filter/ui/TimeFilter';
+import { FilteredSummary } from '@/features/dashboard/FilteredSummary';
 
 const DashboardPage = () => {
   useSyncFiltersWithUrl();
 
   const { data: products } = useProducts();
   const { data: joinedRows } = useJoinedRows(products);
-
-  useEffect(() => {
-    if (joinedRows) {
-      console.log('Joined Rows:', joinedRows.slice(0, 3));
-    }
-  }, [joinedRows]);
+  const filteredRows = useIndexedFilteredRows(joinedRows ?? []);
 
   if (!products) return <div>Loading products...</div>;
   if (!joinedRows) return <div>Loading joined rows...</div>;
 
   return (
-    <div>
-      <div>
-        <TimeFilter />
-        <br />
-        <GenreFilter />
-        <h1>🧪 Test Page</h1>
+    <Container maxWidth="xl">
+      <Box py={3}>
+        {/* 필터 섹션 */}
+        <Paper elevation={1} sx={{ p: 3, mb: 3 }}>
+          <Box display="flex" flexDirection="column" gap={3}>
+            <TimeFilter />
+            <GenreFilter />
+          </Box>
+        </Paper>
 
-        <h2>✅ Products</h2>
-        <pre>{JSON.stringify(products?.slice(0, 3), null, 2)}</pre>
-      </div>
-    </div>
+        {/* 요약 대시보드 */}
+        <FilteredSummary filteredRows={filteredRows} isLoading={!joinedRows} />
+      </Box>
+    </Container>
   );
 };
 
