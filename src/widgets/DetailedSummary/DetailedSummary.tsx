@@ -4,11 +4,11 @@ import type { JoinedRowWithDerived } from '@/entities/joined/model';
 import { useTotals } from '@/shared/hooks/useTotals';
 import { useGenreStats } from '@/shared/hooks/useGenreStats';
 
-interface DetailedStatsProps {
+interface DetailedSummaryProps {
   filteredRows: JoinedRowWithDerived[];
 }
 
-export const DetailedStats = ({ filteredRows }: DetailedStatsProps) => {
+export const DetailedSummary = ({ filteredRows }: DetailedSummaryProps) => {
   const totals = useTotals(filteredRows);
   const genreStats = useGenreStats(filteredRows);
 

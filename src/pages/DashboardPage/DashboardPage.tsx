@@ -5,10 +5,11 @@ import { useIndexedFilteredRows } from '@/entities/joined/selectors/useIndexedFi
 import { useSyncFiltersWithUrl } from '@/features/filter/lib/useSyncFiltersWithUrl';
 import { GenreFilter } from '@/features/filter/ui/GenreFilter';
 import { TimeFilter } from '@/features/filter/ui/TimeFilter';
-import { FilteredSummary } from '@/features/dashboard/FilteredSummary';
-import { DetailedStats } from '@/features/dashboard/DetailedStats';
-import { SalesChart } from '@/features/dashboard/SalesChart';
-import { GenrePieChart } from '@/features/dashboard/GenrePieChart';
+import { TotalSummary } from '@/widgets/TotalSummary/TotalSummary';
+import { DetailedSummary } from '@/widgets/DetailedSummary/DetailedSummary';
+import { LineChartSection } from '@/widgets/LineChartSection/LineChartSection';
+import { PieChartSection } from '@/widgets/PieChartSection/PieChartSection';
+import { StackedBarChartSection } from '@/widgets/StackedBarChartSection/StackedBarChartSection';
 
 const DashboardPage = () => {
   useSyncFiltersWithUrl();
@@ -32,7 +33,7 @@ const DashboardPage = () => {
         </Paper>
 
         {/* 요약 대시보드 */}
-        <FilteredSummary filteredRows={filteredRows} isLoading={!joinedRows} />
+        <TotalSummary filteredRows={filteredRows} isLoading={!joinedRows} />
 
         {/* 상세 통계 및 차트 */}
         <Box
@@ -41,16 +42,25 @@ const DashboardPage = () => {
           sx={{ flexDirection: { lg: 'row' }, flexWrap: 'wrap', mb: 3 }}
         >
           <Box sx={{ flex: 1, minWidth: '300px' }}>
-            <DetailedStats filteredRows={filteredRows} />
+            <DetailedSummary filteredRows={filteredRows} />
           </Box>
-          <Box sx={{ flex: 2, minWidth: '400px' }}>
-            <SalesChart filteredRows={filteredRows} />
+          <Box sx={{ flex: 2, minWidth: '300px' }}>
+            <LineChartSection filteredRows={filteredRows} />
           </Box>
         </Box>
 
-        {/* 파이 차트 */}
-        <Box>
-          <GenrePieChart filteredRows={filteredRows} />
+        {/* 파이 차트 및 스택 바 차트 */}
+        <Box
+          display="flex"
+          gap={3}
+          sx={{ flexDirection: { lg: 'row' }, flexWrap: 'wrap' }}
+        >
+          <Box sx={{ flex: 1, minWidth: '300px' }}>
+            <PieChartSection filteredRows={filteredRows} />
+          </Box>
+          <Box sx={{ flex: 1, minWidth: '300px' }}>
+            <StackedBarChartSection filteredRows={filteredRows} />
+          </Box>
         </Box>
       </Box>
     </Container>
