@@ -62,7 +62,7 @@ const TimeFilter = () => {
     <Stack direction="row" spacing={2} alignItems="center">
       <Paper variant="outlined" sx={{ border: 'none' }}>
         <Tabs
-          value={selectedPeriod}
+          value={selectedPeriod || false}
           onChange={(_, newValue) => handlePeriodChange(newValue)}
           variant="scrollable"
           scrollButtons="auto"
