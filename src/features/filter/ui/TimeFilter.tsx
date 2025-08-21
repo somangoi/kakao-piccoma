@@ -1,10 +1,10 @@
 import { TextField, Stack, Typography, Tabs, Tab, Paper } from '@mui/material';
-import { useFilterStore } from '@/shared/store/filter';
+import { useFilterStore } from '../model/useFilterStore';
 import { useState } from 'react';
 
 type QuickPeriod = 'last24h' | 'lastWeek' | 'lastMonth' | 'lastYear';
 
-const TimeFilter = () => {
+export const TimeFilter = () => {
   const { startDate, endDate, setFilter } = useFilterStore();
   const [selectedPeriod, setSelectedPeriod] = useState<QuickPeriod | null>(
     null
@@ -68,7 +68,7 @@ const TimeFilter = () => {
           scrollButtons="auto"
         >
           <Tab label="Last 24 hour" value="last24h" />
-          <Tab label="Last weeks" value="lastWeek" />
+          <Tab label="Last week" value="lastWeek" />
           <Tab label="Last month" value="lastMonth" />
           <Tab label="Last year" value="lastYear" />
         </Tabs>
@@ -96,5 +96,3 @@ const TimeFilter = () => {
     </Stack>
   );
 };
-
-export default TimeFilter;

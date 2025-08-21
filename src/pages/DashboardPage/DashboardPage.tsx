@@ -1,9 +1,9 @@
+import { useEffect } from 'react';
 import { useJoinedRows } from '@/entities/joined/useJoinedRows';
 import { useProducts } from '@/entities/product/repository';
-import GenreFilter from '@/features/filter/GenreFilter';
-import TimeFilter from '@/features/filter/TimeFilter';
-import { useSyncFiltersWithUrl } from '@/shared/hooks/useSyncFiltersWithUrl';
-import { useEffect } from 'react';
+import { useSyncFiltersWithUrl } from '@/features/filter/lib/useSyncFiltersWithUrl';
+import { GenreFilter } from '@/features/filter/ui/GenreFilter';
+import { TimeFilter } from '@/features/filter/ui/TimeFilter';
 
 const DashboardPage = () => {
   useSyncFiltersWithUrl();
