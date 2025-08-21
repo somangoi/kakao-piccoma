@@ -18,10 +18,10 @@ const DashboardPage = () => {
   if (!joinedRows) return <div>Loading joined rows...</div>;
 
   return (
-    <Container maxWidth="xl">
+    <Container maxWidth="xl" sx={{ bgcolor: 'primary.light' }}>
       <Box py={3}>
         {/* 필터 섹션 */}
-        <Paper elevation={1} sx={{ p: 3, mb: 3 }}>
+        <Paper elevation={0} sx={{ p: 3, mb: 3 }}>
           <Box display="flex" flexDirection="column" gap={3}>
             <TimeFilter />
             <GenreFilter />
