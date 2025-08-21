@@ -10,28 +10,3 @@ export type Product = {
   startedAt: Date;
   thumbUrl: string;
 };
-
-export type ProductSalesDaily = {
-  productId: number;
-  date: Date;
-  totalSales: number;
-  totalReadUser: number;
-  totalPaidUser: number;
-  appSales: number;
-  webSales: number;
-};
-
-export type ProductSummary = {
-  product: Product;
-  period: {
-    days: number;
-    startDate: Date;
-    endDate: Date;
-  };
-  totals: {
-    totalSales: number;
-    totalReadUser: number;
-    totalPaidUser: number;
-  };
-  series: ProductSalesDaily[];
-};

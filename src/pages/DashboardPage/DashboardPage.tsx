@@ -1,45 +1,37 @@
+import { Box, Container, Paper } from '@mui/material';
+import { useJoinedRows } from '@/entities/joined/useJoinedRows';
 import { useProducts } from '@/entities/product/repository';
-import { useSalesMap } from '@/entities/sales/hooks/useSalesMap';
-import { useSalesWithWorker } from '@/entities/sales/repository';
-import GenreFilter from '@/features/filter/GenreFilter';
-import TimeFilter from '@/features/filter/TimeFilter';
-import { useSyncFiltersWithUrl } from '@/shared/hooks/useSyncFiltersWithUrl';
-import { useEffect } from 'react';
+import { useIndexedFilteredRows } from '@/entities/joined/selectors/useIndexedFilteredRows';
+import { useSyncFiltersWithUrl } from '@/features/filter/lib/useSyncFiltersWithUrl';
+import { GenreFilter } from '@/features/filter/ui/GenreFilter';
+import { TimeFilter } from '@/features/filter/ui/TimeFilter';
+import { FilteredSummary } from '@/features/dashboard/FilteredSummary';
 
 const DashboardPage = () => {
   useSyncFiltersWithUrl();
 
   const { data: products } = useProducts();
-  const { data: sales } = useSalesWithWorker();
-  const { data: salesMap } = useSalesMap();
+  const { data: joinedRows } = useJoinedRows(products);
+  const filteredRows = useIndexedFilteredRows(joinedRows ?? []);
 
-  useEffect(() => {
-    console.log('🚀 Sales loaded:', sales?.length);
-  }, [sales]);
+  if (!products) return <div>Loading products...</div>;
+  if (!joinedRows) return <div>Loading joined rows...</div>;
 
   return (
-    <div>
-      <div>
-        <TimeFilter />
-        <br />
-        <GenreFilter />
-        <h1>🧪 Test Page</h1>
+    <Container maxWidth="xl">
+      <Box py={3}>
+        {/* 필터 섹션 */}
+        <Paper elevation={1} sx={{ p: 3, mb: 3 }}>
+          <Box display="flex" flexDirection="column" gap={3}>
+            <TimeFilter />
+            <GenreFilter />
+          </Box>
+        </Paper>
 
-        <h2>✅ Products</h2>
-        <pre>{JSON.stringify(products?.slice(0, 3), null, 2)}</pre>
-
-        <h2>✅ SalesMap</h2>
-        {salesMap && (
-          <pre>
-            {JSON.stringify(
-              Array.from(salesMap.entries()).slice(0, 1),
-              null,
-              2
-            )}
-          </pre>
-        )}
-      </div>
-    </div>
+        {/* 요약 대시보드 */}
+        <FilteredSummary filteredRows={filteredRows} isLoading={!joinedRows} />
+      </Box>
+    </Container>
   );
 };
 
