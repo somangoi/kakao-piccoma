@@ -72,6 +72,8 @@ class SalesDataIndex {
     for (const [dateKey, salesData] of this.dateIndex) {
       if (dateKey >= start && dateKey <= end) {
         for (const { sale, productId } of salesData) {
+          if (!this.productIndex.has(productId)) continue;
+
           if (!salesByProduct.has(productId)) {
             salesByProduct.set(productId, []);
           }
