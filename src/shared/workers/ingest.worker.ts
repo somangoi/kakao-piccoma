@@ -1,9 +1,15 @@
 /// <reference lib="webworker" />
-export {};
+import { parseSalesJson, joinSalesWithProducts } from './worker-utils';
+import type { Product } from '@/entities/product/model';
+import type { JoinedRow } from '@/entities/joined/model';
 
 type InMsg =
   | { type: 'gzip-chunk'; chunk: ArrayBuffer | Uint8Array }
-  | { type: 'gzip-end' };
+  | { type: 'gzip-end'; products: Product[] };
+
+type OutMsg =
+  | { type: 'joined-rows'; payload: JoinedRow[] }
+  | { type: 'error'; payload: string };
 
 let chunks: Uint8Array[] = [];
 
@@ -11,7 +17,6 @@ self.onmessage = async (e: MessageEvent<InMsg>) => {
   const msg = e.data;
 
   if (msg.type === 'gzip-chunk') {
-    // 수신 타입을 Uint8Array로 정규화
     const u8 =
       msg.chunk instanceof Uint8Array ? msg.chunk : new Uint8Array(msg.chunk);
     chunks.push(u8);
@@ -20,7 +25,7 @@ self.onmessage = async (e: MessageEvent<InMsg>) => {
 
   if (msg.type === 'gzip-end') {
     try {
-      // 모든 청크를 연결하여 하나의 ArrayBuffer 생성
+      // 1. 전체 청크 합치기
       const totalLength = chunks.reduce((sum, chunk) => sum + chunk.length, 0);
       const combined = new Uint8Array(totalLength);
       let offset = 0;
@@ -28,14 +33,21 @@ self.onmessage = async (e: MessageEvent<InMsg>) => {
         combined.set(chunk, offset);
         offset += chunk.length;
       }
-      const arrayBuffer = combined.buffer;
-      self.postMessage({ type: 'cube-final', payload: arrayBuffer }, [
-        arrayBuffer,
-      ]);
+
+      // 2. 압축 해제 및 JSON 파싱
+      const buffer = combined.buffer;
+      const sales = parseSalesJson(buffer);
+
+      // 3. products와 조인
+      const joinedRows = joinSalesWithProducts(sales, msg.products);
+
+      // 4. 결과 전송
+      const out: OutMsg = { type: 'joined-rows', payload: joinedRows };
+      self.postMessage(out);
     } catch (err) {
       self.postMessage({ type: 'error', payload: serializeError(err) });
     } finally {
-      chunks.length = 0; // 메모리 정리
+      chunks = [];
     }
   }
 };
