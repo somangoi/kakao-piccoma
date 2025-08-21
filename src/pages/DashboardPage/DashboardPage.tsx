@@ -6,6 +6,8 @@ import { useSyncFiltersWithUrl } from '@/features/filter/lib/useSyncFiltersWithU
 import { GenreFilter } from '@/features/filter/ui/GenreFilter';
 import { TimeFilter } from '@/features/filter/ui/TimeFilter';
 import { FilteredSummary } from '@/features/dashboard/FilteredSummary';
+import { DetailedStats } from '@/features/dashboard/DetailedStats';
+import { SalesChart } from '@/features/dashboard/SalesChart';
 
 const DashboardPage = () => {
   useSyncFiltersWithUrl();
@@ -21,7 +23,7 @@ const DashboardPage = () => {
     <Container maxWidth="xl" sx={{ bgcolor: 'primary.light' }}>
       <Box py={3}>
         {/* 필터 섹션 */}
-        <Paper elevation={0} sx={{ p: 3, mb: 3 }}>
+        <Paper elevation={0} sx={{ p: 3, mb: 3, borderRadius: 2 }}>
           <Box display="flex" flexDirection="column" gap={3}>
             <TimeFilter />
             <GenreFilter />
@@ -30,6 +32,20 @@ const DashboardPage = () => {
 
         {/* 요약 대시보드 */}
         <FilteredSummary filteredRows={filteredRows} isLoading={!joinedRows} />
+
+        {/* 상세 통계 및 차트 */}
+        <Box
+          display="flex"
+          gap={3}
+          sx={{ flexDirection: { lg: 'row' }, flexWrap: 'wrap' }}
+        >
+          <Box sx={{ flex: 1, minWidth: '300px' }}>
+            <DetailedStats filteredRows={filteredRows} />
+          </Box>
+          <Box sx={{ flex: 2, minWidth: '400px' }}>
+            <SalesChart filteredRows={filteredRows} />
+          </Box>
+        </Box>
       </Box>
     </Container>
   );
