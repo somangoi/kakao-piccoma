@@ -30,8 +30,13 @@ export const DetailedStats = ({ filteredRows }: DetailedStatsProps) => {
   }, [filteredRows]);
 
   return (
-    <Box display="flex" flexDirection="column" gap={2}>
-      <Card elevation={0} sx={{ borderRadius: 2 }}>
+    <Box
+      display="flex"
+      flexDirection="column"
+      gap={2}
+      sx={{ minHeight: '400px' }}
+    >
+      <Card elevation={0} sx={{ borderRadius: 2, flex: 1 }}>
         <CardContent>
           <Typography variant="h6" fontWeight={'bold'} gutterBottom>
             📈 상위 장르별 매출
@@ -59,7 +64,7 @@ export const DetailedStats = ({ filteredRows }: DetailedStatsProps) => {
         </CardContent>
       </Card>
 
-      <Card elevation={0} sx={{ borderRadius: 2 }}>
+      <Card elevation={0} sx={{ borderRadius: 2, flex: 1 }}>
         <CardContent>
           <Typography variant="h6" fontWeight={'bold'} gutterBottom>
             📊 데이터 상세

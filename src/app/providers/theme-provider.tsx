@@ -10,8 +10,12 @@ const theme = createTheme({
     mode: 'light',
     primary: {
       main: '#0E61FC',
-      light: '#FAFAFA',
-      dark: '#030303',
+      light: '#4A83FE',
+      dark: '#0B50D4',
+    },
+    background: {
+      default: '#F5F5F5',
+      paper: '#FFFFFF',
     },
   },
 });
