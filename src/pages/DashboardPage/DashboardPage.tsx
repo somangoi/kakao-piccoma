@@ -10,6 +10,7 @@ import { DetailedSummary } from '@/widgets/DetailedSummary/DetailedSummary';
 import { LineChartSection } from '@/widgets/LineChartSection/LineChartSection';
 import { PieChartSection } from '@/widgets/PieChartSection/PieChartSection';
 import { StackedBarChartSection } from '@/widgets/StackedBarChartSection/StackedBarChartSection';
+import { ProductTable } from '@/widgets/ProductTable/ProductTable';
 
 const DashboardPage = () => {
   useSyncFiltersWithUrl();
@@ -61,6 +62,14 @@ const DashboardPage = () => {
           <Box sx={{ flex: 1, minWidth: '300px' }}>
             <StackedBarChartSection filteredRows={filteredRows} />
           </Box>
+        </Box>
+
+        {/* 작품 테이블 */}
+        <Box sx={{ mt: 3 }}>
+          <Paper elevation={0} sx={{ p: 2, borderRadius: 2 }}>
+            {/* 작품 목록 컴포넌트 추가 */}
+            <ProductTable filteredRows={filteredRows} />
+          </Paper>
         </Box>
       </Box>
     </Container>
