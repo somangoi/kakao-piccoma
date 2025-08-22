@@ -28,7 +28,7 @@ export const StackedBarChartSection = ({
 
     if (viewMode === 'product') {
       filteredRows.forEach((row) => {
-        const key = row.title;
+        const key = `${row.title} (ID: ${row.id})`; // 제목과 ID를 조합하여 고유하게 식별
         if (!groupedData[key]) {
           groupedData[key] = { webSales: 0, appSales: 0 };
         }
