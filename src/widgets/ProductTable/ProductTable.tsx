@@ -56,6 +56,16 @@ export const ProductTable = ({ filteredRows }: ProductTableProps) => {
 
   const columns = useMemo(
     () => [
+      columnHelper.accessor('id', {
+        id: 'id',
+        header: 'ID',
+        cell: (info) => (
+          <Typography variant="body2" sx={{ textAlign: 'center' }}>
+            {info.getValue()}
+          </Typography>
+        ),
+        size: 70,
+      }),
       columnHelper.accessor('title', {
         id: 'title',
         header: '작품명',
@@ -158,6 +168,27 @@ export const ProductTable = ({ filteredRows }: ProductTableProps) => {
           size: 135,
         }
       ),
+      columnHelper.accessor(
+        (row) => {
+          return row.filteredSeries.reduce(
+            (sum, sale) => sum + sale.totalPaidUser,
+            0
+          );
+        },
+        {
+          id: 'totalPaidUser',
+          header: '기간 내 구매자 수',
+          cell: (info) => (
+            <Typography
+              variant="body2"
+              sx={{ fontWeight: 500, textAlign: 'right' }}
+            >
+              {info.getValue().toLocaleString()}명
+            </Typography>
+          ),
+          size: 140,
+        }
+      ),
       columnHelper.accessor('status', {
         id: 'status',
         header: '상태',
@@ -198,7 +229,7 @@ export const ProductTable = ({ filteredRows }: ProductTableProps) => {
             />
           );
         },
-        size: 100,
+        size: 90,
       }),
       columnHelper.accessor('tags', {
         id: 'tags',
