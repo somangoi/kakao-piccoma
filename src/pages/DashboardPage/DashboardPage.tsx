@@ -67,7 +67,6 @@ const DashboardPage = () => {
         {/* 작품 테이블 */}
         <Box sx={{ mt: 3 }}>
           <Paper elevation={0} sx={{ p: 2, borderRadius: 2 }}>
-            {/* 작품 목록 컴포넌트 추가 */}
             <ProductTable filteredRows={filteredRows} />
           </Paper>
         </Box>
