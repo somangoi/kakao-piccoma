@@ -20,8 +20,11 @@ import {
   Box,
   Typography,
   Pagination,
+  Badge,
+  IconButton,
+  Tooltip,
 } from '@mui/material';
-import { ArrowUpward, ArrowDownward } from '@mui/icons-material';
+import { ArrowUpward, ArrowDownward, ClearAll } from '@mui/icons-material';
 import type { JoinedRowWithDerived } from '@/entities/joined/model';
 
 interface ProductTableProps {
@@ -32,6 +35,24 @@ const columnHelper = createColumnHelper<JoinedRowWithDerived>();
 
 export const ProductTable = ({ filteredRows }: ProductTableProps) => {
   const [sorting, setSorting] = useState<SortingState>([]);
+
+  const handleSortingChange = (updaterOrValue: any) => {
+    setSorting((prev) => {
+      const newSorting =
+        typeof updaterOrValue === 'function'
+          ? updaterOrValue(prev)
+          : updaterOrValue;
+      return newSorting;
+    });
+  };
+
+  const clearAllSorting = () => {
+    setSorting([]);
+  };
+
+  const getSortIndex = (columnId: string) => {
+    return sorting.findIndex((sort) => sort.id === columnId);
+  };
 
   const columns = useMemo(
     () => [
@@ -220,7 +241,11 @@ export const ProductTable = ({ filteredRows }: ProductTableProps) => {
     state: {
       sorting,
     },
-    onSortingChange: setSorting,
+    onSortingChange: handleSortingChange,
+    enableMultiSort: true,
+    enableSortingRemoval: true,
+    maxMultiSortColCount: 5,
+    isMultiSortEvent: () => true,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -233,6 +258,20 @@ export const ProductTable = ({ filteredRows }: ProductTableProps) => {
 
   return (
     <Box sx={{ width: '100%' }}>
+      {/* Sorting Controls */}
+      {sorting.length > 0 && (
+        <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Typography variant="body2" color="text.secondary">
+            정렬 적용: {sorting.length}개 컬럼
+          </Typography>
+          <Tooltip title="모든 정렬 해제">
+            <IconButton size="small" onClick={clearAllSorting}>
+              <ClearAll fontSize="small" />
+            </IconButton>
+          </Tooltip>
+        </Box>
+      )}
+
       <TableContainer component={Paper} elevation={0}>
         <Table size="medium" stickyHeader sx={{ tableLayout: 'fixed' }}>
           <TableHead>
@@ -249,16 +288,21 @@ export const ProductTable = ({ filteredRows }: ProductTableProps) => {
                     style={{ width: header.getSize() }}
                   >
                     {header.isPlaceholder ? null : (
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          ...(header.column.getCanSort() && {
-                            cursor: 'pointer',
-                          }),
-                        }}
-                        onClick={header.column.getToggleSortingHandler()}
+                      <Tooltip 
+                        title={header.column.getCanSort() ? "클릭: 정렬 추가/변경" : ""}
+                        arrow
+                        placement="top"
                       >
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            ...(header.column.getCanSort() && {
+                              cursor: 'pointer',
+                            }),
+                          }}
+                          onClick={header.column.getToggleSortingHandler()}
+                        >
                         <Typography variant="body2" sx={{ fontWeight: 600 }}>
                           {flexRender(
                             header.column.columnDef.header,
@@ -274,22 +318,39 @@ export const ProductTable = ({ filteredRows }: ProductTableProps) => {
                               justifyContent: 'center',
                             }}
                           >
-                            {header.column.getIsSorted() === 'asc' ? (
-                              <ArrowUpward
-                                fontSize="small"
-                                sx={{ color: 'primary.main' }}
-                              />
-                            ) : header.column.getIsSorted() === 'desc' ? (
-                              <ArrowDownward
-                                fontSize="small"
-                                sx={{ color: 'primary.main' }}
-                              />
+                            {header.column.getIsSorted() ? (
+                              <Badge
+                                badgeContent={
+                                  getSortIndex(header.column.id) + 1
+                                }
+                                color="primary"
+                                sx={{
+                                  '& .MuiBadge-badge': {
+                                    fontSize: '0.6rem',
+                                    minWidth: '16px',
+                                    height: '16px',
+                                  },
+                                }}
+                              >
+                                {header.column.getIsSorted() === 'asc' ? (
+                                  <ArrowUpward
+                                    fontSize="small"
+                                    sx={{ color: 'primary.main' }}
+                                  />
+                                ) : (
+                                  <ArrowDownward
+                                    fontSize="small"
+                                    sx={{ color: 'primary.main' }}
+                                  />
+                                )}
+                              </Badge>
                             ) : (
                               <Box sx={{ width: 20, height: 20 }} />
                             )}
                           </Box>
                         )}
-                      </Box>
+                        </Box>
+                      </Tooltip>
                     )}
                   </TableCell>
                 ))}
