@@ -36,10 +36,7 @@ export const PieChartSection = ({ filteredRows }: PieChartSectionProps) => {
   const option = useMemo(
     () => ({
       title: {
-        text:
-          viewMode === 'count'
-            ? '🥸 장르별 작품수 비중'
-            : '💰 장르별 매출 비중',
+        text: viewMode === 'count' ? '장르별 작품수 비중' : '장르별 매출 비중',
         left: 'left',
         top: 'top',
         textStyle: {

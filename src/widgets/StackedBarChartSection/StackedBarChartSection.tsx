@@ -87,11 +87,11 @@ export const StackedBarChartSection = ({
   const getTitle = () => {
     switch (viewMode) {
       case 'product':
-        return '📚 매출 상위 10개 작품';
+        return '매출 상위 10개 작품';
       case 'genre':
-        return '🎭 매출 상위 10개 장르';
+        return '매출 상위 10개 장르';
       case 'publisher':
-        return '🏢 매출 상위 10개 출판사';
+        return '매출 상위 10개 출판사';
       default:
         return '매출 비교';
     }
@@ -105,8 +105,8 @@ export const StackedBarChartSection = ({
         top: 'top',
         subtext: '총합 매출(웹+앱) 기준',
         subtextStyle: {
-          color: '#666', // Customize subtitle color
-          fontSize: 12, // Customize subtitle font size
+          color: '#666',
+          fontSize: 12,
         },
         textStyle: {
           fontSize: theme.typography.h6.fontSize,
@@ -153,7 +153,15 @@ export const StackedBarChartSection = ({
       yAxis: {
         type: 'value',
         axisLabel: {
-          formatter: (value: number) => `${(value / 1000000).toFixed(0)}M`,
+          formatter: (value: number) => {
+            if (value >= 100_000_000) {
+              return `${(value / 100_000_000).toFixed(0)}억`;
+            } else if (value >= 10_000) {
+              return `${(value / 10_000).toFixed(0)}만`;
+            } else {
+              return `${value.toLocaleString()}`;
+            }
+          },
         },
       },
       series: [
@@ -163,7 +171,7 @@ export const StackedBarChartSection = ({
           stack: 'total',
           data: chartData.webSales,
           itemStyle: {
-            color: theme.palette.warning.light,
+            color: theme.palette.success.light,
           },
         },
         {
@@ -172,7 +180,7 @@ export const StackedBarChartSection = ({
           stack: 'total',
           data: chartData.appSales,
           itemStyle: {
-            color: theme.palette.success.light,
+            color: theme.palette.primary.light,
           },
         },
       ],

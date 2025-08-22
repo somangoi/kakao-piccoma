@@ -47,7 +47,7 @@ export const LineChartSection = ({ filteredRows }: LineChartSectionProps) => {
   const option = useMemo(
     () => ({
       title: {
-        text: '📈 총 매출 추이',
+        text: '총 매출 추이',
         left: 'left',
         textStyle: {
           fontSize: theme.typography.h6.fontSize,

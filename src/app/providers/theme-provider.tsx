@@ -18,14 +18,14 @@ const theme = createTheme({
       paper: '#FFFFFF',
     },
     warning: {
-      main: '#FF5656', // 붉은 주황 (푸른색과 보색 대비)
-      light: '#FF8686', // 밝은 경고
-      dark: '#C52B2B', // 어두운 붉은 주황
+      main: '#FF5656',
+      light: '#FF8686',
+      dark: '#C52B2B',
     },
     success: {
-      main: '#3DDC97', // 청록색 계열 (푸른색과 조화롭고 안정감)
-      light: '#75F0BB', // 밝은 청록
-      dark: '#16B07B', // 어두운 청록
+      main: '#3DDC97',
+      light: '#75F0BB',
+      dark: '#16B07B',
     },
   },
 });

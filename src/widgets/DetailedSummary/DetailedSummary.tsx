@@ -28,7 +28,7 @@ export const DetailedSummary = ({ filteredRows }: DetailedSummaryProps) => {
       <Card elevation={0} sx={{ borderRadius: 2, flex: 1 }}>
         <CardContent>
           <Typography variant="h6" fontWeight={'bold'} gutterBottom>
-            📈 상위 장르별 매출
+            상위 장르별 매출
           </Typography>
           <Box display="flex" flexDirection="column" gap={1}>
             {topGenres.map(([genre, stats]) => (
@@ -56,7 +56,7 @@ export const DetailedSummary = ({ filteredRows }: DetailedSummaryProps) => {
       <Card elevation={0} sx={{ borderRadius: 2, flex: 1 }}>
         <CardContent>
           <Typography variant="h6" fontWeight={'bold'} gutterBottom>
-            📊 데이터 상세
+            데이터 상세
           </Typography>
           <Box display="flex" flexDirection="column" gap={1}>
             <Box display="flex" justifyContent="space-between">
