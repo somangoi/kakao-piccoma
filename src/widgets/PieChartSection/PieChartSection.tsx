@@ -9,7 +9,6 @@ import {
   Button,
   Typography,
   Divider,
-  Skeleton,
 } from '@mui/material';
 import { useState, useMemo } from 'react';
 import ReactECharts from 'echarts-for-react';
@@ -19,15 +18,11 @@ import { useFilterStore } from '@/features/filter/model/useFilterStore';
 
 interface PieChartSectionProps {
   filteredRows: JoinedRowWithDerived[];
-  isLoading?: boolean;
 }
 
 type ViewMode = 'count' | 'sales';
 
-export const PieChartSection = ({
-  filteredRows,
-  isLoading,
-}: PieChartSectionProps) => {
+export const PieChartSection = ({ filteredRows }: PieChartSectionProps) => {
   const theme = useTheme();
   const [viewMode, setViewMode] = useState<ViewMode>('count');
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
@@ -47,35 +42,15 @@ export const PieChartSection = ({
     return data;
   }, [genreStats, viewMode]);
 
-  // 전체 합계 계산
-  const totalValue = useMemo(() => {
-    return chartData.reduce((sum, item) => sum + item.value, 0);
-  }, [chartData]);
-
-  // 숫자 포매팅 함수
-  const formatNumber = (value: number, isCount: boolean = false) => {
-    if (isCount) {
-      return `${value.toLocaleString()}개`;
-    } else {
-      return `${value.toLocaleString()}원`;
-    }
-  };
-
   const option = useMemo(
     () => ({
       title: {
         text: viewMode === 'count' ? '장르별 작품수 비중' : '장르별 매출 비중',
-        subtext: `총 ${viewMode === 'count' ? '작품수' : '매출'}: ${formatNumber(totalValue, viewMode === 'count')}`,
         left: 'left',
         top: 'top',
         textStyle: {
           fontSize: theme.typography.h6.fontSize,
           fontWeight: 'bold',
-        },
-        subtextStyle: {
-          fontSize: 14,
-          fontWeight: 'bold',
-          color: theme.palette.primary.main,
         },
       },
       tooltip: {
@@ -131,7 +106,7 @@ export const PieChartSection = ({
         '#D2D6F9',
       ],
     }),
-    [chartData, viewMode, theme, totalValue, formatNumber]
+    [chartData, viewMode, theme]
   );
 
   const handleViewModeChange = (
@@ -174,39 +149,6 @@ export const PieChartSection = ({
     }),
     [isGlobalFilterActive]
   );
-
-  if (isLoading) {
-    return (
-      <Card
-        elevation={0}
-        sx={{ borderRadius: 2, height: 'auto', minHeight: '500px' }}
-      >
-        <CardContent sx={{ p: 2 }}>
-          <Skeleton variant="rounded" width={150} height={36} sx={{ mb: 2 }} />
-          <Skeleton
-            variant="rectangular"
-            width="100%"
-            height={400}
-            sx={{ mb: 2 }}
-          />
-          <Box sx={{ textAlign: 'center', py: 2 }}>
-            <Skeleton
-              variant="text"
-              width={300}
-              height={20}
-              sx={{ mx: 'auto', mb: 1 }}
-            />
-            <Skeleton
-              variant="text"
-              width={250}
-              height={16}
-              sx={{ mx: 'auto' }}
-            />
-          </Box>
-        </CardContent>
-      </Card>
-    );
-  }
 
   return (
     <Card
@@ -277,7 +219,7 @@ export const PieChartSection = ({
                     onClick={handleClearSelection}
                     sx={{ fontSize: '0.75rem' }}
                   >
-                    선택 초기화
+                    선택 해제
                   </Button>
                 </Box>
               </Box>
@@ -321,7 +263,7 @@ export const PieChartSection = ({
                 onClick={() => setFilter({ genres: [] })}
                 sx={{ fontSize: '0.75rem', flexShrink: 0 }}
               >
-                장르 필터 초기화
+                장르 필터 해제
               </Button>
             </Box>
           </>

@@ -1,6 +1,8 @@
+// entities/joinedRow/useJoinedRows.ts
 import { useEffect, useState } from 'react';
 import type { JoinedRow } from './model';
 
+// 이 워커 인스턴스는 Vite에서 `new Worker(new URL(...))` 방식 사용한다고 가정
 import Worker from '@/shared/workers/ingest.worker?worker';
 import type { Product } from '../product/model';
 
@@ -10,11 +12,7 @@ export function useJoinedRows(products: Product[] | undefined) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!products) {
-      return;
-    }
-
-    if (products.length === 0) {
+    if (!products || products.length === 0) {
       setData([]);
       setIsLoading(false);
       return;

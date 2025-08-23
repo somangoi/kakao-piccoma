@@ -14,27 +14,10 @@ export const GenreFilter = () => {
     setFilter({ genres: newGenres });
   };
 
-  const handleAllToggle = () => {
-    if (selectedGenres.length === 0) {
-      return;
-    } else {
-      setFilter({ genres: [] });
-    }
-  };
-
-  const isAllSelected = selectedGenres.length === 0;
-
   if (isLoading) return <CircularProgress size={24} />;
 
   return (
     <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-      <Chip
-        label={'All'}
-        onClick={handleAllToggle}
-        variant={isAllSelected ? 'filled' : 'outlined'}
-        color={isAllSelected ? 'primary' : 'default'}
-        clickable
-      />
       {genres.map((genre) => (
         <Chip
           key={genre}

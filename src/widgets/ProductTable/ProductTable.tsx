@@ -19,7 +19,6 @@ import {
   Typography,
   Badge,
   Tooltip,
-  Skeleton,
 } from '@mui/material';
 import { ArrowUpward, ArrowDownward } from '@mui/icons-material';
 import type { JoinedRowWithDerived } from '@/entities/joined/model';
@@ -33,13 +32,9 @@ import { useProductSearch } from '@/entities/product/hooks/useProductSearch';
 
 interface ProductTableProps {
   filteredRows: JoinedRowWithDerived[];
-  isLoading?: boolean;
 }
 
-export const ProductTable = ({
-  filteredRows,
-  isLoading,
-}: ProductTableProps) => {
+export const ProductTable = ({ filteredRows }: ProductTableProps) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [localFilters, setLocalFilters] =
     useState<LocalFilters>(initialLocalFilters);
@@ -110,67 +105,6 @@ export const ProductTable = ({
       },
     },
   });
-
-  if (isLoading) {
-    return (
-      <Box sx={{ width: '100%' }}>
-        <Box
-          sx={{
-            mb: 2,
-            p: 2,
-            border: '1px solid',
-            borderColor: 'divider',
-            borderRadius: 1,
-          }}
-        >
-          <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap' }}>
-            <Skeleton variant="rounded" width={200} height={40} />
-            <Skeleton variant="rounded" width={150} height={40} />
-            <Skeleton variant="rounded" width={150} height={40} />
-            <Skeleton variant="rounded" width={100} height={40} />
-          </Box>
-          <Skeleton variant="text" width={250} height={20} />
-        </Box>
-
-        <TableContainer
-          component={Paper}
-          elevation={0}
-          sx={{ minHeight: '650px' }}
-        >
-          <Table size="medium">
-            <TableHead>
-              <TableRow>
-                {Array.from({ length: 6 }).map((_, index) => (
-                  <TableCell key={index}>
-                    <Skeleton variant="text" width="80%" height={24} />
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {Array.from({ length: 10 }).map((_, rowIndex) => (
-                <TableRow key={rowIndex}>
-                  {Array.from({ length: 6 }).map((_, cellIndex) => (
-                    <TableCell key={cellIndex}>
-                      <Skeleton
-                        variant="text"
-                        width={cellIndex === 0 ? '60%' : '40%'}
-                        height={20}
-                      />
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-          <Skeleton variant="rounded" width={300} height={40} />
-        </Box>
-      </Box>
-    );
-  }
 
   return (
     <Box sx={{ width: '100%' }}>
