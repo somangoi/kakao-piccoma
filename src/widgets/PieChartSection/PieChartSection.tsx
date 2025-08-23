@@ -239,7 +239,7 @@ export const PieChartSection = ({ filteredRows }: PieChartSectionProps) => {
                     onClick={handleClearSelection}
                     sx={{ fontSize: '0.75rem' }}
                   >
-                    선택 해제
+                    선택 초기화
                   </Button>
                 </Box>
               </Box>
@@ -283,7 +283,7 @@ export const PieChartSection = ({ filteredRows }: PieChartSectionProps) => {
                 onClick={() => setFilter({ genres: [] })}
                 sx={{ fontSize: '0.75rem', flexShrink: 0 }}
               >
-                장르 필터 해제
+                장르 필터 초기화
               </Button>
             </Box>
           </>
