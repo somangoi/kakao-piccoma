@@ -121,7 +121,15 @@ export const ProductTable = ({ filteredRows }: ProductTableProps) => {
       {/* Sorting Controls */}
       <SortingControls sorting={sorting} clearAllSorting={clearAllSorting} />
 
-      <TableContainer component={Paper} elevation={0}>
+      <TableContainer
+        component={Paper}
+        elevation={0}
+        sx={{
+          minHeight: '650px',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
         <Table size="medium" stickyHeader sx={{ tableLayout: 'fixed' }}>
           <TableHead>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -211,30 +219,66 @@ export const ProductTable = ({ filteredRows }: ProductTableProps) => {
             ))}
           </TableHead>
           <TableBody>
-            {table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                sx={{
-                  '&:hover': {
-                    backgroundColor: 'grey.50',
-                  },
-                }}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell
-                    key={cell.id}
-                    sx={{
-                      py: 2,
-                      height: '60px',
-                      verticalAlign: 'middle',
-                      overflow: 'hidden',
-                    }}
+            {table.getRowModel().rows.length > 0 ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: 'grey.50',
+                    },
+                  }}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell
+                      key={cell.id}
+                      sx={{
+                        py: 2,
+                        height: '60px',
+                        verticalAlign: 'middle',
+                        overflow: 'hidden',
+                      }}
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  sx={{
+                    textAlign: 'center',
+                    py: 8,
+                    color: 'text.secondary',
+                    height: '600px', // 테이블 최소 높이와 맞춤 (600px - 헤더/여백)
+                    verticalAlign: 'middle',
+                  }}
+                >
+                  <Typography
+                    variant="h6"
+                    sx={{ mb: 1, color: 'text.secondary' }}
                   >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
+                    {localFilters.searchText ||
+                    localFilters.statuses.length > 0 ||
+                    localFilters.publishers.length > 0
+                      ? '검색 결과가 없습니다'
+                      : '표시할 데이터가 없습니다'}
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: 'text.disabled' }}>
+                    {localFilters.searchText ||
+                    localFilters.statuses.length > 0 ||
+                    localFilters.publishers.length > 0
+                      ? '다른 검색어나 필터 조건을 시도해보세요'
+                      : '데이터를 불러오는 중이거나 조건에 맞는 항목이 없습니다'}
+                  </Typography>
+                </TableCell>
               </TableRow>
-            ))}
+            )}
           </TableBody>
         </Table>
       </TableContainer>
