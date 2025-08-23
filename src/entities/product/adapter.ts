@@ -3,9 +3,8 @@ import type { Product } from './model';
 
 const statusMap = {
   S: 'ON_SALE' as const,
-  H: 'PAUSED' as const,
-  E: 'ENDED' as const,
   A: 'ACTIVE' as const,
+  I: 'INACTIVE' as const,
 };
 
 export function adaptProductDto(dto: ProductDto): Product {

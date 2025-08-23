@@ -1,7 +1,7 @@
 export type Product = {
   id: number;
   title: string;
-  status: 'ON_SALE' | 'PAUSED' | 'ENDED' | 'ACTIVE';
+  status: 'ON_SALE' | 'ACTIVE' | 'INACTIVE';
   publisher: string;
   category: string;
   genre: string;
