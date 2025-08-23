@@ -12,6 +12,8 @@ import {
   Chip,
 } from '@mui/material';
 import { ClearAll } from '@mui/icons-material';
+import { useState, useEffect } from 'react';
+import { useDebounce } from 'use-debounce';
 import type { LocalFilters } from '../types/LocalFilters';
 import {
   isLocalFiltersEmpty,
@@ -20,7 +22,9 @@ import {
 
 interface FilterSectionProps {
   localFilters: LocalFilters;
-  setLocalFilters: (filters: LocalFilters | ((prev: LocalFilters) => LocalFilters)) => void;
+  setLocalFilters: (
+    filters: LocalFilters | ((prev: LocalFilters) => LocalFilters)
+  ) => void;
   clearAllLocalFilters: () => void;
   filterOptions: {
     statuses: string[];
@@ -38,6 +42,19 @@ export const FilterSection = ({
   filteredRowsCount,
   localFilteredRowsCount,
 }: FilterSectionProps) => {
+  const [inputValue, setInputValue] = useState(localFilters.searchText);
+  const [debouncedValue] = useDebounce(inputValue, 300);
+
+  useEffect(() => {
+    setLocalFilters((prev) => ({ ...prev, searchText: debouncedValue }));
+  }, [debouncedValue, setLocalFilters]);
+
+  useEffect(() => {
+    if (localFilters.searchText !== inputValue) {
+      setInputValue(localFilters.searchText);
+    }
+  }, [localFilters.searchText]);
+
   return (
     <Box
       sx={{
@@ -68,13 +85,8 @@ export const FilterSection = ({
         size="small"
         label="검색"
         placeholder="작품명, 작가명, 출판사"
-        value={localFilters.searchText}
-        onChange={(e) =>
-          setLocalFilters((prev) => ({
-            ...prev,
-            searchText: e.target.value,
-          }))
-        }
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
         sx={{ minWidth: '250px' }}
       />
 
