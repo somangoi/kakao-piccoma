@@ -7,6 +7,42 @@ import {
 } from '@mui/icons-material';
 import type { JoinedRowWithDerived } from '@/entities/joined/model';
 import { useTotals } from '@/shared/hooks/useTotals';
+import type { ReactNode } from 'react';
+
+interface SummaryCardProps {
+  icon: ReactNode;
+  value: string;
+  label: string;
+}
+
+const SummaryCard = ({ icon, value, label }: SummaryCardProps) => (
+  <Grid sx={{ flex: 1, minWidth: '200px' }}>
+    <Card
+      elevation={0}
+      sx={{ borderRadius: 2, height: '120px', width: '100%' }}
+    >
+      <CardContent
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 2,
+          height: '100%',
+          p: 2,
+        }}
+      >
+        <Box sx={{ flexShrink: 0 }}>{icon}</Box>
+        <Box sx={{ flex: 1, minWidth: 0 }}>
+          <Typography variant="h6" fontWeight="bold" noWrap>
+            {value}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {label}
+          </Typography>
+        </Box>
+      </CardContent>
+    </Card>
+  </Grid>
+);
 
 interface TotalSummaryProps {
   filteredRows: JoinedRowWithDerived[];
@@ -39,121 +75,26 @@ export const TotalSummary = ({
       spacing={2.5}
       sx={{ mb: 4, width: '100%', display: 'flex', flexWrap: 'wrap' }}
     >
-      <Grid sx={{ flex: 1, minWidth: '200px' }}>
-        <Card
-          elevation={0}
-          sx={{ borderRadius: 2, height: '120px', width: '100%' }}
-        >
-          <CardContent
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 2,
-              height: '100%',
-              p: 2,
-            }}
-          >
-            <Box sx={{ flexShrink: 0 }}>
-              <TrendingUp color="primary" sx={{ fontSize: 32 }} />
-            </Box>
-            <Box sx={{ flex: 1, minWidth: 0 }}>
-              <Typography variant="h6" fontWeight="bold" noWrap>
-                {totals.totalSales.toLocaleString()}원
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                총 매출
-              </Typography>
-            </Box>
-          </CardContent>
-        </Card>
-      </Grid>
-
-      <Grid sx={{ flex: 1, minWidth: '200px' }}>
-        <Card
-          elevation={0}
-          sx={{ borderRadius: 2, height: '120px', width: '100%' }}
-        >
-          <CardContent
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 2,
-              height: '100%',
-              p: 2,
-            }}
-          >
-            <Box sx={{ flexShrink: 0 }}>
-              <People color="primary" sx={{ fontSize: 32 }} />
-            </Box>
-            <Box sx={{ flex: 1, minWidth: 0 }}>
-              <Typography variant="h6" fontWeight="bold" noWrap>
-                {totals.totalReadUser.toLocaleString()}명
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                총 조회자수
-              </Typography>
-            </Box>
-          </CardContent>
-        </Card>
-      </Grid>
-
-      <Grid sx={{ flex: 1, minWidth: '200px' }}>
-        <Card
-          elevation={0}
-          sx={{ borderRadius: 2, height: '120px', width: '100%' }}
-        >
-          <CardContent
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 2,
-              height: '100%',
-              p: 2,
-            }}
-          >
-            <Box sx={{ flexShrink: 0 }}>
-              <ShoppingCart color="primary" sx={{ fontSize: 32 }} />
-            </Box>
-            <Box sx={{ flex: 1, minWidth: 0 }}>
-              <Typography variant="h6" fontWeight="bold" noWrap>
-                {totals.totalPaidUser.toLocaleString()}명
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                총 구매자수
-              </Typography>
-            </Box>
-          </CardContent>
-        </Card>
-      </Grid>
-
-      <Grid sx={{ flex: 1, minWidth: '200px' }}>
-        <Card
-          elevation={0}
-          sx={{ borderRadius: 2, height: '120px', width: '100%' }}
-        >
-          <CardContent
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 2,
-              height: '100%',
-              p: 2,
-            }}
-          >
-            <Box sx={{ flexShrink: 0 }}>
-              <Category color="primary" sx={{ fontSize: 32 }} />
-            </Box>
-            <Box sx={{ flex: 1, minWidth: 0 }}>
-              <Typography variant="h6" fontWeight="bold" noWrap>
-                {totals.totalProducts.toLocaleString()}개
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                필터된 작품수
-              </Typography>
-            </Box>
-          </CardContent>
-        </Card>
-      </Grid>
+      <SummaryCard
+        icon={<TrendingUp color="primary" sx={{ fontSize: 32 }} />}
+        value={`${totals.totalSales.toLocaleString()}원`}
+        label="총 매출"
+      />
+      <SummaryCard
+        icon={<People color="primary" sx={{ fontSize: 32 }} />}
+        value={`${totals.totalReadUser.toLocaleString()}명`}
+        label="총 조회자수"
+      />
+      <SummaryCard
+        icon={<ShoppingCart color="primary" sx={{ fontSize: 32 }} />}
+        value={`${totals.totalPaidUser.toLocaleString()}명`}
+        label="총 구매자수"
+      />
+      <SummaryCard
+        icon={<Category color="primary" sx={{ fontSize: 32 }} />}
+        value={`${totals.totalProducts.toLocaleString()}개`}
+        label="필터된 작품수"
+      />
     </Grid>
   );
 };
