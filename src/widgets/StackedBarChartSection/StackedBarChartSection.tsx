@@ -205,7 +205,7 @@ export const StackedBarChartSection = ({
   };
 
   return (
-    <Card elevation={0} sx={{ borderRadius: 2, height: '500px' }}>
+    <Card elevation={0} sx={{ borderRadius: 2, height: '100%', minHeight: '500px' }}>
       <CardContent sx={{ height: '100%', p: 2 }}>
         <Box sx={{ mb: 2 }}>
           <ToggleButtonGroup
