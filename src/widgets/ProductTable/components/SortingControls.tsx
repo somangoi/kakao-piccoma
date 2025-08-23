@@ -7,7 +7,10 @@ interface SortingControlsProps {
   clearAllSorting: () => void;
 }
 
-export const SortingControls = ({ sorting, clearAllSorting }: SortingControlsProps) => {
+export const SortingControls = ({
+  sorting,
+  clearAllSorting,
+}: SortingControlsProps) => {
   if (sorting.length === 0) return null;
 
   return (
@@ -15,7 +18,7 @@ export const SortingControls = ({ sorting, clearAllSorting }: SortingControlsPro
       <Typography variant="body2" color="text.secondary">
         정렬 적용: {sorting.length}개 컬럼
       </Typography>
-      <Tooltip title="모든 정렬 해제">
+      <Tooltip title="모든 정렬 초기화">
         <IconButton size="small" onClick={clearAllSorting}>
           <ClearAll fontSize="small" />
         </IconButton>

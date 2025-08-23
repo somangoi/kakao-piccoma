@@ -1,4 +1,11 @@
-import { Box, Card, CardContent, Typography, Chip } from '@mui/material';
+import {
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  Chip,
+  Skeleton,
+} from '@mui/material';
 import { useMemo } from 'react';
 import type { JoinedRowWithDerived } from '@/entities/joined/model';
 import { useTotals } from '@/shared/hooks/useTotals';
@@ -6,9 +13,13 @@ import { useGenreStats } from '@/shared/hooks/useGenreStats';
 
 interface DetailedSummaryProps {
   filteredRows: JoinedRowWithDerived[];
+  isLoading?: boolean;
 }
 
-export const DetailedSummary = ({ filteredRows }: DetailedSummaryProps) => {
+export const DetailedSummary = ({
+  filteredRows,
+  isLoading,
+}: DetailedSummaryProps) => {
   const totals = useTotals(filteredRows);
   const genreStats = useGenreStats(filteredRows);
 
@@ -17,6 +28,53 @@ export const DetailedSummary = ({ filteredRows }: DetailedSummaryProps) => {
       .sort(([, a], [, b]) => b.sales - a.sales)
       .slice(0, 5);
   }, [genreStats]);
+
+  if (isLoading) {
+    return (
+      <Box
+        display="flex"
+        flexDirection="column"
+        gap={2}
+        sx={{ minHeight: '400px' }}
+      >
+        <Card elevation={0} sx={{ borderRadius: 2, flex: 1 }}>
+          <CardContent>
+            <Skeleton variant="text" width={150} height={32} sx={{ mb: 2 }} />
+            <Box display="flex" flexDirection="column" gap={1}>
+              {Array.from({ length: 5 }).map((_, index) => (
+                <Box
+                  key={index}
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                >
+                  <Skeleton variant="rounded" width={60} height={24} />
+                  <Box textAlign="right">
+                    <Skeleton variant="text" width={80} height={20} />
+                    <Skeleton variant="text" width={60} height={16} />
+                  </Box>
+                </Box>
+              ))}
+            </Box>
+          </CardContent>
+        </Card>
+
+        <Card elevation={0} sx={{ borderRadius: 2, flex: 1 }}>
+          <CardContent>
+            <Skeleton variant="text" width={100} height={32} sx={{ mb: 2 }} />
+            <Box display="flex" flexDirection="column" gap={1}>
+              {Array.from({ length: 3 }).map((_, index) => (
+                <Box key={index} display="flex" justifyContent="space-between">
+                  <Skeleton variant="text" width={120} height={20} />
+                  <Skeleton variant="text" width={80} height={20} />
+                </Box>
+              ))}
+            </Box>
+          </CardContent>
+        </Card>
+      </Box>
+    );
+  }
 
   return (
     <Box

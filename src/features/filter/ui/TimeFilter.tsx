@@ -30,6 +30,10 @@ export const TimeFilter = () => {
           size="small"
           value={formatDateForInput(startDate)}
           onChange={handleStartDateChange}
+          slotProps={{
+            inputLabel: { shrink: true }
+          }}
+          placeholder=""
         />
         <Typography variant="body2" color="text.secondary">
           -
@@ -40,6 +44,10 @@ export const TimeFilter = () => {
           size="small"
           value={formatDateForInput(endDate)}
           onChange={handleEndDateChange}
+          slotProps={{
+            inputLabel: { shrink: true }
+          }}
+          placeholder=""
         />
       </Stack>
     </Stack>

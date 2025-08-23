@@ -5,6 +5,7 @@ import {
   ToggleButton,
   ToggleButtonGroup,
   useTheme,
+  Skeleton,
 } from '@mui/material';
 import { useState, useMemo } from 'react';
 import ReactECharts from 'echarts-for-react';
@@ -12,12 +13,14 @@ import type { JoinedRowWithDerived } from '@/entities/joined/model';
 
 interface StackedBarChartSectionProps {
   filteredRows: JoinedRowWithDerived[];
+  isLoading?: boolean;
 }
 
 type ViewMode = 'product' | 'genre' | 'publisher';
 
 export const StackedBarChartSection = ({
   filteredRows,
+  isLoading,
 }: StackedBarChartSectionProps) => {
   const theme = useTheme();
   const [viewMode, setViewMode] = useState<ViewMode>('genre');
@@ -204,8 +207,29 @@ export const StackedBarChartSection = ({
     }
   };
 
+  if (isLoading) {
+    return (
+      <Card
+        elevation={0}
+        sx={{ borderRadius: 2, height: '100%', minHeight: '500px' }}
+      >
+        <CardContent sx={{ height: '100%', p: 2 }}>
+          <Skeleton variant="rounded" width={200} height={36} sx={{ mb: 2 }} />
+          <Skeleton
+            variant="rectangular"
+            width="100%"
+            sx={{ flexGrow: 1, minHeight: '400px' }}
+          />
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
-    <Card elevation={0} sx={{ borderRadius: 2, height: '100%', minHeight: '500px' }}>
+    <Card
+      elevation={0}
+      sx={{ borderRadius: 2, height: '100%', minHeight: '500px' }}
+    >
       <CardContent sx={{ height: '100%', p: 2 }}>
         <Box sx={{ mb: 2 }}>
           <ToggleButtonGroup
