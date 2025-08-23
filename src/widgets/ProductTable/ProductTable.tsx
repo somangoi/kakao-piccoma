@@ -28,6 +28,7 @@ import { FilterSection } from './components/FilterSection';
 import { SortingControls } from './components/SortingControls';
 import { TablePagination } from './components/TablePagination';
 import { createTableColumns } from './config/columns';
+import { useProductSearch } from '@/entities/product/hooks/useProductSearch';
 
 interface ProductTableProps {
   filteredRows: JoinedRowWithDerived[];
@@ -37,11 +38,15 @@ export const ProductTable = ({ filteredRows }: ProductTableProps) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [localFilters, setLocalFilters] =
     useState<LocalFilters>(initialLocalFilters);
+  const searchedRows = useProductSearch(
+    filteredRows ?? [],
+    localFilters.searchText
+  );
 
   // 로컬 필터 적용
   const localFilteredRows = useMemo(() => {
-    return applyLocalFilters(filteredRows, localFilters);
-  }, [filteredRows, localFilters]);
+    return applyLocalFilters(searchedRows, localFilters);
+  }, [searchedRows, localFilters]);
 
   // 필터 옵션 생성 (전역 필터된 데이터 기반)
   const filterOptions = useMemo(() => {
