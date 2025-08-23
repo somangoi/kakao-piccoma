@@ -42,15 +42,35 @@ export const PieChartSection = ({ filteredRows }: PieChartSectionProps) => {
     return data;
   }, [genreStats, viewMode]);
 
+  // 전체 합계 계산
+  const totalValue = useMemo(() => {
+    return chartData.reduce((sum, item) => sum + item.value, 0);
+  }, [chartData]);
+
+  // 숫자 포매팅 함수
+  const formatNumber = (value: number, isCount: boolean = false) => {
+    if (isCount) {
+      return `${value.toLocaleString()}개`;
+    } else {
+      return `${value.toLocaleString()}원`;
+    }
+  };
+
   const option = useMemo(
     () => ({
       title: {
         text: viewMode === 'count' ? '장르별 작품수 비중' : '장르별 매출 비중',
+        subtext: `총 ${viewMode === 'count' ? '작품수' : '매출'}: ${formatNumber(totalValue, viewMode === 'count')}`,
         left: 'left',
         top: 'top',
         textStyle: {
           fontSize: theme.typography.h6.fontSize,
           fontWeight: 'bold',
+        },
+        subtextStyle: {
+          fontSize: 14,
+          fontWeight: 'bold',
+          color: theme.palette.primary.main,
         },
       },
       tooltip: {
@@ -106,7 +126,7 @@ export const PieChartSection = ({ filteredRows }: PieChartSectionProps) => {
         '#D2D6F9',
       ],
     }),
-    [chartData, viewMode, theme]
+    [chartData, viewMode, theme, totalValue, formatNumber]
   );
 
   const handleViewModeChange = (
