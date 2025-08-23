@@ -27,7 +27,12 @@ const DashboardPage = () => {
       <Box py={3}>
         {/* 필터 섹션 */}
         <Paper elevation={0} sx={{ mb: 3, bgcolor: 'transparent' }}>
-          <Box display="flex" flexDirection="column" gap={3}>
+          <Box 
+            display="flex" 
+            flexDirection={{ xs: 'column', md: 'row' }}
+            gap={3}
+            alignItems={{ xs: 'stretch', md: 'center' }}
+          >
             <TimeFilter />
             <GenreFilter />
           </Box>
