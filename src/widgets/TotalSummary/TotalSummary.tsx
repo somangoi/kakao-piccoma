@@ -26,8 +26,10 @@ interface SummaryCardProps {
 const SummaryCard = ({ icon, value, label, isLoading }: SummaryCardProps) => (
   <Grid sx={{ flex: 1, minWidth: '200px' }}>
     <Card
+      component="article"
       elevation={0}
       sx={{ borderRadius: 2, height: '120px', width: '100%' }}
+      aria-label={`${label} 통계`}
     >
       <CardContent
         sx={{
@@ -38,7 +40,7 @@ const SummaryCard = ({ icon, value, label, isLoading }: SummaryCardProps) => (
           p: 2,
         }}
       >
-        <Box sx={{ flexShrink: 0 }}>
+        <Box sx={{ flexShrink: 0 }} aria-hidden="true">
           {isLoading ? (
             <Skeleton variant="circular" width={32} height={32} />
           ) : (
@@ -72,9 +74,11 @@ export const TotalSummary = ({
   if (isLoading) {
     return (
       <Grid
+        component="section"
         container
         spacing={2.5}
         sx={{ mb: 4, width: '100%', display: 'flex', flexWrap: 'wrap' }}
+        aria-label="통계 요약 로딩 중"
       >
         <SummaryCard isLoading />
         <SummaryCard isLoading />
@@ -86,9 +90,11 @@ export const TotalSummary = ({
 
   return (
     <Grid
+      component="section"
       container
       spacing={2.5}
       sx={{ mb: 4, width: '100%', display: 'flex', flexWrap: 'wrap' }}
+      aria-label="통계 요약"
     >
       <SummaryCard
         icon={<TrendingUp color="primary" sx={{ fontSize: 32 }} />}

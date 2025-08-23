@@ -29,21 +29,31 @@ const DashboardPage = () => {
   // 공통 레이아웃 컴포넌트
   const PageLayout = ({ children }: { children: React.ReactNode }) => (
     <Container
+      component="main"
       maxWidth="xl"
       sx={{ bgcolor: 'background', py: 3, minHeight: '100vh' }}
     >
-      <Box py={2}>{children}</Box>
+      <Box component="section" py={2}>
+        {children}
+      </Box>
     </Container>
   );
 
   // 필터 섹션 컴포넌트
   const FilterSection = () => (
-    <Paper elevation={0} sx={{ mb: 3, bgcolor: 'transparent' }}>
+    <Paper
+      component="section"
+      elevation={0}
+      sx={{ mb: 3, bgcolor: 'transparent' }}
+      aria-label="데이터 필터링"
+    >
       <Box
+        component="div"
         display="flex"
         flexDirection={{ xs: 'column', md: 'row' }}
         gap={3}
         alignItems={{ xs: 'stretch', md: 'center' }}
+        aria-label="필터 컨트롤"
       >
         <TimeFilter />
         <GenreFilter />
@@ -84,32 +94,54 @@ const DashboardPage = () => {
       <FilterSection />
 
       {/* 요약 대시보드 */}
-      <TotalSummary filteredRows={filteredRows} isLoading={isLoading} />
+      <Box component="section" aria-label="데이터 요약">
+        <TotalSummary filteredRows={filteredRows} isLoading={isLoading} />
+      </Box>
 
       {/* 상세 통계 및 차트 */}
       <Box
+        component="section"
         display="flex"
         gap={3}
         sx={{ flexDirection: { lg: 'row' }, flexWrap: 'wrap', mb: 3 }}
+        aria-label="상세 통계 및 트렌드 차트"
       >
-        <Box sx={{ flex: 1, minWidth: '300px' }}>
+        <Box
+          component="aside"
+          sx={{ flex: 1, minWidth: '300px' }}
+          aria-label="상세 통계"
+        >
           <DetailedSummary filteredRows={filteredRows} isLoading={isLoading} />
         </Box>
-        <Box sx={{ flex: 2, minWidth: '300px' }}>
+        <Box
+          component="section"
+          sx={{ flex: 2, minWidth: '300px' }}
+          aria-label="라인 차트"
+        >
           <LineChartSection filteredRows={filteredRows} isLoading={isLoading} />
         </Box>
       </Box>
 
       {/* 파이 차트 및 스택 바 차트 */}
       <Box
+        component="section"
         display="flex"
         gap={3}
         sx={{ flexDirection: { lg: 'row' }, flexWrap: 'wrap' }}
+        aria-label="분포 차트"
       >
-        <Box sx={{ flex: 1, minWidth: '300px' }}>
+        <Box
+          component="section"
+          sx={{ flex: 1, minWidth: '300px' }}
+          aria-label="파이 차트"
+        >
           <PieChartSection filteredRows={filteredRows} isLoading={isLoading} />
         </Box>
-        <Box sx={{ flex: 1, minWidth: '300px' }}>
+        <Box
+          component="section"
+          sx={{ flex: 1, minWidth: '300px' }}
+          aria-label="스택 바 차트"
+        >
           <StackedBarChartSection
             filteredRows={filteredRows}
             isLoading={isLoading}
@@ -118,7 +150,11 @@ const DashboardPage = () => {
       </Box>
 
       {/* 작품 테이블 */}
-      <Box sx={{ mt: 3 }}>
+      <Box
+        component="section"
+        sx={{ mt: 3 }}
+        aria-label="작품 상세 정보 테이블"
+      >
         <Paper elevation={0} sx={{ p: 2, borderRadius: 2 }}>
           <ProductTable filteredRows={filteredRows} isLoading={isLoading} />
         </Paper>

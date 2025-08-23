@@ -3,6 +3,7 @@ import { AppBar, Toolbar, Typography, Box } from '@mui/material';
 export const Header = () => {
   return (
     <AppBar
+      component="header"
       position="static"
       elevation={0}
       sx={{
@@ -11,12 +12,12 @@ export const Header = () => {
         borderColor: 'divider',
       }}
     >
-      <Toolbar>
-        <Box display="flex" alignItems="center" gap={2}>
+      <Toolbar component="nav">
+        <Box component="div" display="flex" alignItems="center" gap={2}>
           <Box
             component="img"
             src="/logo.svg"
-            alt="Logo"
+            alt="대시보드 로고"
             sx={{
               width: 32,
               height: 32,
@@ -24,7 +25,7 @@ export const Header = () => {
           />
           <Typography
             variant="h6"
-            component="div"
+            component="h1"
             sx={{
               fontWeight: 'bold',
               color: 'text.primary',
@@ -38,15 +39,18 @@ export const Header = () => {
         <Box flexGrow={1} />
 
         {/* 오른쪽: 지원자 이름 */}
-        <Typography
-          variant="body1"
-          sx={{
-            color: 'text.secondary',
-            fontWeight: 500,
-          }}
-        >
-          황소미
-        </Typography>
+        <Box component="div">
+          <Typography
+            variant="body1"
+            component="span"
+            sx={{
+              color: 'text.secondary',
+              fontWeight: 500,
+            }}
+          >
+            황소미
+          </Typography>
+        </Box>
       </Toolbar>
     </AppBar>
   );
