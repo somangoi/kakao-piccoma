@@ -17,11 +17,11 @@ const DashboardPage = () => {
   useSyncFiltersWithUrl();
 
   const { data: products } = useProducts();
-  const { data: joinedRows } = useJoinedRows(products);
+  const { data: joinedRows, isLoading: isJoinedRowsLoading } =
+    useJoinedRows(products);
   const filteredRows = useIndexedFilteredRows(joinedRows ?? []);
 
-  if (!products) return <div>Loading products...</div>;
-  if (!joinedRows) return <div>Loading joined rows...</div>;
+  const isLoading = isJoinedRowsLoading;
 
   return (
     <>
@@ -45,7 +45,7 @@ const DashboardPage = () => {
           </Paper>
 
           {/* 요약 대시보드 */}
-          <TotalSummary filteredRows={filteredRows} isLoading={!joinedRows} />
+          <TotalSummary filteredRows={filteredRows} isLoading={isLoading} />
 
           {/* 상세 통계 및 차트 */}
           <Box
@@ -54,10 +54,16 @@ const DashboardPage = () => {
             sx={{ flexDirection: { lg: 'row' }, flexWrap: 'wrap', mb: 3 }}
           >
             <Box sx={{ flex: 1, minWidth: '300px' }}>
-              <DetailedSummary filteredRows={filteredRows} />
+              <DetailedSummary
+                filteredRows={filteredRows}
+                isLoading={isLoading}
+              />
             </Box>
             <Box sx={{ flex: 2, minWidth: '300px' }}>
-              <LineChartSection filteredRows={filteredRows} />
+              <LineChartSection
+                filteredRows={filteredRows}
+                isLoading={isLoading}
+              />
             </Box>
           </Box>
 
@@ -68,17 +74,23 @@ const DashboardPage = () => {
             sx={{ flexDirection: { lg: 'row' }, flexWrap: 'wrap' }}
           >
             <Box sx={{ flex: 1, minWidth: '300px' }}>
-              <PieChartSection filteredRows={filteredRows} />
+              <PieChartSection
+                filteredRows={filteredRows}
+                isLoading={isLoading}
+              />
             </Box>
             <Box sx={{ flex: 1, minWidth: '300px' }}>
-              <StackedBarChartSection filteredRows={filteredRows} />
+              <StackedBarChartSection
+                filteredRows={filteredRows}
+                isLoading={isLoading}
+              />
             </Box>
           </Box>
 
           {/* 작품 테이블 */}
           <Box sx={{ mt: 3 }}>
             <Paper elevation={0} sx={{ p: 2, borderRadius: 2 }}>
-              <ProductTable filteredRows={filteredRows} />
+              <ProductTable filteredRows={filteredRows} isLoading={isLoading} />
             </Paper>
           </Box>
         </Box>

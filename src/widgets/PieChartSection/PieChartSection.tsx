@@ -9,6 +9,7 @@ import {
   Button,
   Typography,
   Divider,
+  Skeleton,
 } from '@mui/material';
 import { useState, useMemo } from 'react';
 import ReactECharts from 'echarts-for-react';
@@ -18,11 +19,15 @@ import { useFilterStore } from '@/features/filter/model/useFilterStore';
 
 interface PieChartSectionProps {
   filteredRows: JoinedRowWithDerived[];
+  isLoading?: boolean;
 }
 
 type ViewMode = 'count' | 'sales';
 
-export const PieChartSection = ({ filteredRows }: PieChartSectionProps) => {
+export const PieChartSection = ({
+  filteredRows,
+  isLoading,
+}: PieChartSectionProps) => {
   const theme = useTheme();
   const [viewMode, setViewMode] = useState<ViewMode>('count');
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
@@ -169,6 +174,39 @@ export const PieChartSection = ({ filteredRows }: PieChartSectionProps) => {
     }),
     [isGlobalFilterActive]
   );
+
+  if (isLoading) {
+    return (
+      <Card
+        elevation={0}
+        sx={{ borderRadius: 2, height: 'auto', minHeight: '500px' }}
+      >
+        <CardContent sx={{ p: 2 }}>
+          <Skeleton variant="rounded" width={150} height={36} sx={{ mb: 2 }} />
+          <Skeleton
+            variant="rectangular"
+            width="100%"
+            height={400}
+            sx={{ mb: 2 }}
+          />
+          <Box sx={{ textAlign: 'center', py: 2 }}>
+            <Skeleton
+              variant="text"
+              width={300}
+              height={20}
+              sx={{ mx: 'auto', mb: 1 }}
+            />
+            <Skeleton
+              variant="text"
+              width={250}
+              height={16}
+              sx={{ mx: 'auto' }}
+            />
+          </Box>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card

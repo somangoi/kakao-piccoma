@@ -1,4 +1,11 @@
-import { Box, Card, CardContent, Typography, Grid } from '@mui/material';
+import {
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  Grid,
+  Skeleton,
+} from '@mui/material';
 import {
   TrendingUp,
   People,
@@ -10,12 +17,13 @@ import { useTotals } from '@/shared/hooks/useTotals';
 import type { ReactNode } from 'react';
 
 interface SummaryCardProps {
-  icon: ReactNode;
-  value: string;
-  label: string;
+  icon?: ReactNode;
+  value?: string;
+  label?: string;
+  isLoading?: boolean;
 }
 
-const SummaryCard = ({ icon, value, label }: SummaryCardProps) => (
+const SummaryCard = ({ icon, value, label, isLoading }: SummaryCardProps) => (
   <Grid sx={{ flex: 1, minWidth: '200px' }}>
     <Card
       elevation={0}
@@ -30,13 +38,19 @@ const SummaryCard = ({ icon, value, label }: SummaryCardProps) => (
           p: 2,
         }}
       >
-        <Box sx={{ flexShrink: 0 }}>{icon}</Box>
+        <Box sx={{ flexShrink: 0 }}>
+          {isLoading ? (
+            <Skeleton variant="circular" width={32} height={32} />
+          ) : (
+            icon
+          )}
+        </Box>
         <Box sx={{ flex: 1, minWidth: 0 }}>
           <Typography variant="h6" fontWeight="bold" noWrap>
-            {value}
+            {isLoading ? <Skeleton width={80} /> : value}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {label}
+            {isLoading ? <Skeleton width={60} /> : label}
           </Typography>
         </Box>
       </CardContent>
@@ -55,16 +69,17 @@ export const TotalSummary = ({
 }: TotalSummaryProps) => {
   const totals = useTotals(filteredRows);
 
-  if (isLoading || filteredRows.length === 0) {
+  if (isLoading) {
     return (
       <Grid
         container
         spacing={2.5}
         sx={{ mb: 4, width: '100%', display: 'flex', flexWrap: 'wrap' }}
       >
-        <Card elevation={0} sx={{ p: 3, borderRadius: 2, width: '100%' }}>
-          <Typography>데이터 로딩 중...</Typography>
-        </Card>
+        <SummaryCard isLoading />
+        <SummaryCard isLoading />
+        <SummaryCard isLoading />
+        <SummaryCard isLoading />
       </Grid>
     );
   }
