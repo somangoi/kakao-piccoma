@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { queryKeys } from '@/shared/api/query-keys';
-import Worker from '@/shared/workers/ingest.worker?worker';
+import Worker from '@/entities/joined/workers/ingest.worker.ts?worker';
 import type { Product } from '../product/model';
 import type { JoinedRow } from '../joined/model';
 
