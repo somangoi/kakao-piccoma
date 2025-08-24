@@ -13,7 +13,7 @@ import {
   Category,
 } from '@mui/icons-material';
 import type { JoinedRowWithDerived } from '@/entities/joined/model';
-import { useTotals } from '@/shared/hooks/useTotals';
+import { useTotalStats } from '@/entities/joined/selectors/useTotalStats';
 import type { ReactNode } from 'react';
 
 interface SummaryCardProps {
@@ -69,7 +69,7 @@ export const TotalSummary = ({
   filteredRows,
   isLoading,
 }: TotalSummaryProps) => {
-  const totals = useTotals(filteredRows);
+  const totals = useTotalStats(filteredRows);
 
   if (isLoading) {
     return (

@@ -1,8 +1,6 @@
 import {
   Box,
   Typography,
-  IconButton,
-  Tooltip,
   TextField,
   FormControl,
   InputLabel,
@@ -10,8 +8,8 @@ import {
   MenuItem,
   OutlinedInput,
   Chip,
+  Button,
 } from '@mui/material';
-import { ClearAll } from '@mui/icons-material';
 import { useState, useEffect } from 'react';
 import { useDebounce } from 'use-debounce';
 import type { LocalFilters } from '../types/LocalFilters';
@@ -58,7 +56,6 @@ export const FilterSection = ({
   return (
     <Box
       sx={{
-        mb: 2,
         display: 'flex',
         alignItems: 'center',
         gap: 2,
@@ -71,11 +68,14 @@ export const FilterSection = ({
           {filteredRowsCount}개 중 {localFilteredRowsCount}개 표시
         </Typography>
         {!isLocalFiltersEmpty(localFilters) && (
-          <Tooltip title="모든 필터 초기화">
-            <IconButton size="small" onClick={clearAllLocalFilters}>
-              <ClearAll fontSize="small" />
-            </IconButton>
-          </Tooltip>
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={clearAllLocalFilters}
+            sx={{ fontSize: '0.75rem', flexShrink: 0 }}
+          >
+            필터 초기화
+          </Button>
         )}
       </Box>
 

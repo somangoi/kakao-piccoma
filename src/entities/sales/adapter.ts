@@ -1,4 +1,4 @@
-import type { SalesDto } from './dto';
+import type { SalesDto } from '@/shared/api/contracts/sales.dto';
 import type { Sales } from './model';
 
 export function adaptSalesDto(dto: SalesDto): Sales {

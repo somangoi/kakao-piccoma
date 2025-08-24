@@ -1,17 +1,17 @@
-import { Box, Container, Paper } from '@mui/material';
-import { EmptyState } from '@/shared/ui/EmptyState';
-import { DataRefreshIndicator } from '@/shared/ui/DataRefreshIndicator';
-import { useJoinedRows } from '@/entities/joined/useJoinedRows';
-import { useIndexedFilteredRows } from '@/entities/joined/selectors/useIndexedFilteredRows';
-import { useSyncFiltersWithUrl } from '@/features/filter/lib/useSyncFiltersWithUrl';
-import { GenreFilter } from '@/features/filter/ui/GenreFilter';
-import { TimeFilter } from '@/features/filter/ui/TimeFilter';
+import { Box, Paper } from '@mui/material';
+import { DataRefreshWidget } from '@/widgets/DataRefreshWidget/DataRefreshWidget';
 import { TotalSummary } from '@/widgets/TotalSummary/TotalSummary';
 import { DetailedSummary } from '@/widgets/DetailedSummary/DetailedSummary';
 import { LineChartSection } from '@/widgets/LineChartSection/LineChartSection';
 import { PieChartSection } from '@/widgets/PieChartSection/PieChartSection';
 import { StackedBarChartSection } from '@/widgets/StackedBarChartSection/StackedBarChartSection';
 import { ProductTable } from '@/widgets/ProductTable/ProductTable';
+import FilterSection from '@/widgets/FilterSection/FilterSection';
+import { useIndexedFilteredRows } from '@/features/filter/hooks/useIndexedFilteredRows';
+import { useSyncFiltersWithUrl } from '@/features/filter/hooks/useSyncFiltersWithUrl';
+import { useJoinedRows } from '@/entities/joined/useJoinedRows';
+import PageLayout from '@/shared/ui/PageLayout';
+import { EmptyState } from '@/shared/ui/EmptyState';
 
 const DashboardPage = () => {
   useSyncFiltersWithUrl();
@@ -24,41 +24,6 @@ const DashboardPage = () => {
   const filteredRows = useIndexedFilteredRows(joinedRows ?? []);
 
   const isLoading = isJoinedRowsLoading;
-
-  // 공통 레이아웃 컴포넌트
-  const PageLayout = ({ children }: { children: React.ReactNode }) => (
-    <Container
-      component="main"
-      maxWidth="xl"
-      sx={{ bgcolor: 'background', py: 3, minHeight: '100vh' }}
-    >
-      <Box component="section" py={2}>
-        {children}
-      </Box>
-    </Container>
-  );
-
-  // 필터 섹션 컴포넌트
-  const FilterSection = () => (
-    <Paper
-      component="section"
-      elevation={0}
-      sx={{ mb: 3, bgcolor: 'transparent' }}
-      aria-label="데이터 필터링"
-    >
-      <Box
-        component="div"
-        display="flex"
-        flexDirection={{ xs: 'column', md: 'row' }}
-        gap={3}
-        alignItems={{ xs: 'stretch', md: 'center' }}
-        aria-label="필터 컨트롤"
-      >
-        <TimeFilter />
-        <GenreFilter />
-      </Box>
-    </Paper>
-  );
 
   // 에러 상태
   if (error) {
@@ -96,7 +61,7 @@ const DashboardPage = () => {
         justifyContent="flex-end"
         aria-label="데이터 새로고침 상태"
       >
-        <DataRefreshIndicator />
+        <DataRefreshWidget />
       </Box>
       <FilterSection />
 
@@ -114,14 +79,14 @@ const DashboardPage = () => {
         aria-label="상세 통계 및 트렌드 차트"
       >
         <Box
-          component="aside"
+          component="article"
           sx={{ flex: 1, minWidth: '300px' }}
           aria-label="상세 통계"
         >
           <DetailedSummary filteredRows={filteredRows} isLoading={isLoading} />
         </Box>
         <Box
-          component="section"
+          component="article"
           sx={{ flex: 2, minWidth: '300px' }}
           aria-label="라인 차트"
         >
@@ -138,14 +103,14 @@ const DashboardPage = () => {
         aria-label="분포 차트"
       >
         <Box
-          component="section"
+          component="article"
           sx={{ flex: 1, minWidth: '300px' }}
           aria-label="파이 차트"
         >
           <PieChartSection filteredRows={filteredRows} isLoading={isLoading} />
         </Box>
         <Box
-          component="section"
+          component="article"
           sx={{ flex: 1, minWidth: '300px' }}
           aria-label="스택 바 차트"
         >
