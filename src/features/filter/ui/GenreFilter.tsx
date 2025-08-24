@@ -1,5 +1,5 @@
 import { Chip, Stack, CircularProgress } from '@mui/material';
-import { useGenres } from '@/shared/hooks/useGenres';
+import { useGenres } from '@/features/filter/hooks/useGenres';
 import { useFilterStore } from '../model/useFilterStore';
 
 export const GenreFilter = () => {

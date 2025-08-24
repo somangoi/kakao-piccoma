@@ -3,7 +3,7 @@ import { EmptyState } from '@/shared/ui/EmptyState';
 import { DataRefreshWidget } from '@/widgets/DataRefreshWidget/DataRefreshWidget';
 import { useJoinedRows } from '@/entities/joined/useJoinedRows';
 import { useIndexedFilteredRows } from '@/features/filter/hooks/useIndexedFilteredRows';
-import { useSyncFiltersWithUrl } from '@/features/filter/lib/useSyncFiltersWithUrl';
+import { useSyncFiltersWithUrl } from '@/features/filter/hooks/useSyncFiltersWithUrl';
 import { TotalSummary } from '@/widgets/TotalSummary/TotalSummary';
 import { DetailedSummary } from '@/widgets/DetailedSummary/DetailedSummary';
 import { LineChartSection } from '@/widgets/LineChartSection/LineChartSection';
