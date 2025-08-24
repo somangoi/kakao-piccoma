@@ -1,7 +1,6 @@
 import { Box, Container, Paper } from '@mui/material';
 import { EmptyState } from '@/shared/ui/EmptyState';
 import { useJoinedRows } from '@/entities/joined/useJoinedRows';
-import { useProducts } from '@/entities/product/repository';
 import { useIndexedFilteredRows } from '@/entities/joined/selectors/useIndexedFilteredRows';
 import { useSyncFiltersWithUrl } from '@/features/filter/lib/useSyncFiltersWithUrl';
 import { GenreFilter } from '@/features/filter/ui/GenreFilter';
@@ -16,12 +15,11 @@ import { ProductTable } from '@/widgets/ProductTable/ProductTable';
 const DashboardPage = () => {
   useSyncFiltersWithUrl();
 
-  const { data: products } = useProducts();
   const {
     data: joinedRows,
     isLoading: isJoinedRowsLoading,
     error,
-  } = useJoinedRows(products);
+  } = useJoinedRows();
   const filteredRows = useIndexedFilteredRows(joinedRows ?? []);
 
   const isLoading = isJoinedRowsLoading;

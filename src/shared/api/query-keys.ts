@@ -4,5 +4,7 @@ export const queryKeys = {
   },
   sales: {
     all: ['sales'] as const,
+    joined: (productIds: number[]) =>
+      ['sales', 'joined', ...productIds.sort()] as const,
   },
 };
