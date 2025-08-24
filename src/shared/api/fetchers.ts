@@ -1,4 +1,4 @@
-import type { ProductDto } from '@/entities/product/dto';
+import type { ProductDto } from '@/shared/api/contracts/product.dto';
 
 export async function fetchProducts(): Promise<ProductDto[]> {
   try {

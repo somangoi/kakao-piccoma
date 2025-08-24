@@ -1,4 +1,4 @@
-import type { ProductDto } from './dto';
+import type { ProductDto } from '@/shared/api/contracts/product.dto';
 import type { Product } from './model';
 
 const statusMap = {
