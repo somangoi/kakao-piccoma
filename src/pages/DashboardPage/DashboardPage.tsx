@@ -1,7 +1,7 @@
 import { Box, Container, Paper } from '@mui/material';
 import { EmptyState } from '@/shared/ui/EmptyState';
+import { DataRefreshIndicator } from '@/shared/ui/DataRefreshIndicator';
 import { useJoinedRows } from '@/entities/joined/useJoinedRows';
-import { useProducts } from '@/entities/product/repository';
 import { useIndexedFilteredRows } from '@/entities/joined/selectors/useIndexedFilteredRows';
 import { useSyncFiltersWithUrl } from '@/features/filter/lib/useSyncFiltersWithUrl';
 import { GenreFilter } from '@/features/filter/ui/GenreFilter';
@@ -16,12 +16,11 @@ import { ProductTable } from '@/widgets/ProductTable/ProductTable';
 const DashboardPage = () => {
   useSyncFiltersWithUrl();
 
-  const { data: products } = useProducts();
   const {
     data: joinedRows,
     isLoading: isJoinedRowsLoading,
     error,
-  } = useJoinedRows(products);
+  } = useJoinedRows();
   const filteredRows = useIndexedFilteredRows(joinedRows ?? []);
 
   const isLoading = isJoinedRowsLoading;
@@ -91,6 +90,14 @@ const DashboardPage = () => {
   // 정상 상태
   return (
     <PageLayout>
+      <Box
+        component="div"
+        display="flex"
+        justifyContent="flex-end"
+        aria-label="데이터 새로고침 상태"
+      >
+        <DataRefreshIndicator />
+      </Box>
       <FilterSection />
 
       {/* 요약 대시보드 */}

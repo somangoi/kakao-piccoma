@@ -3,12 +3,8 @@ import type { Sales } from '@/entities/sales/model';
 import type { Product } from '@/entities/product/model';
 import type { JoinedRow } from '@/entities/joined/model';
 
-export function decodeGzip(buffer: ArrayBuffer): string {
-  return new TextDecoder('utf-8').decode(new Uint8Array(buffer));
-}
-
 export function parseSalesJson(buffer: ArrayBuffer): Sales[] {
-  const decoded = decodeGzip(buffer);
+  const decoded = new TextDecoder('utf-8').decode(new Uint8Array(buffer));
   const raw = JSON.parse(decoded);
 
   return raw.map(adaptSalesDto);
