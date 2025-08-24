@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import type { JoinedRowWithDerived } from '@/entities/joined/model';
 
-export interface TotalsData {
+export interface TotalStats {
   totalSales: number;
   totalReadUser: number;
   totalPaidUser: number;
@@ -9,7 +9,9 @@ export interface TotalsData {
   totalSalesRecords: number;
 }
 
-export const useTotals = (filteredRows: JoinedRowWithDerived[]): TotalsData => {
+export const useTotalStats = (
+  filteredRows: JoinedRowWithDerived[]
+): TotalStats => {
   return useMemo(() => {
     return filteredRows.reduce(
       (acc, row) => ({

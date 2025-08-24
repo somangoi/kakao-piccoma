@@ -8,8 +8,8 @@ import {
 } from '@mui/material';
 import { useMemo } from 'react';
 import type { JoinedRowWithDerived } from '@/entities/joined/model';
-import { useTotals } from '@/shared/hooks/useTotals';
-import { useGenreStats } from '@/shared/hooks/useGenreStats';
+import { useTotalStats } from '@/entities/joined/selectors/useTotalStats';
+import { useGenreStats } from '@/entities/joined/selectors/useGenreStats';
 
 interface DetailedSummaryProps {
   filteredRows: JoinedRowWithDerived[];
@@ -20,7 +20,7 @@ export const DetailedSummary = ({
   filteredRows,
   isLoading,
 }: DetailedSummaryProps) => {
-  const totals = useTotals(filteredRows);
+  const totals = useTotalStats(filteredRows);
   const genreStats = useGenreStats(filteredRows);
 
   const topGenres = useMemo(() => {

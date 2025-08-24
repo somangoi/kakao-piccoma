@@ -14,7 +14,7 @@ import {
 import { useState, useMemo } from 'react';
 import ReactECharts from 'echarts-for-react';
 import type { JoinedRowWithDerived } from '@/entities/joined/model';
-import { useGenreStats } from '@/shared/hooks/useGenreStats';
+import { useGenreStats } from '@/entities/joined/selectors/useGenreStats';
 import { useFilterStore } from '@/features/filter/model/useFilterStore';
 
 interface PieChartSectionProps {
