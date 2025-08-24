@@ -28,7 +28,7 @@ import { FilterSection } from './components/FilterSection';
 import { SortingControls } from './components/SortingControls';
 import { TablePagination } from './components/TablePagination';
 import { createTableColumns } from './config/columns';
-import { useProductSearch } from '@/entities/product/hooks/useProductSearch';
+import { useProductSearch } from './hooks/useProductSearch';
 
 interface ProductTableProps {
   filteredRows: JoinedRowWithDerived[];
