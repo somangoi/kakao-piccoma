@@ -1,12 +1,12 @@
 import { Button, Box, Typography } from '@mui/material';
 import { Update as UpdateIcon } from '@mui/icons-material';
-import { useDataRefresh } from '@/shared/hooks/useDataRefresh';
+import { useDataRefresh } from './utils/useDataRefresh';
 
-interface DataRefreshIndicatorProps {
+interface DataRefreshWidgetProps {
   className?: string;
 }
 
-export function DataRefreshIndicator({ className }: DataRefreshIndicatorProps) {
+export function DataRefreshWidget({ className }: DataRefreshWidgetProps) {
   const { hasNewData, refreshData, lastUpdate, formatTime } = useDataRefresh();
 
   return (

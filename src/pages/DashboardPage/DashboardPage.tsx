@@ -1,6 +1,6 @@
 import { Box, Paper } from '@mui/material';
 import { EmptyState } from '@/shared/ui/EmptyState';
-import { DataRefreshIndicator } from '@/shared/ui/DataRefreshIndicator';
+import { DataRefreshWidget } from '@/widgets/DataRefreshWidget/DataRefreshWidget';
 import { useJoinedRows } from '@/entities/joined/useJoinedRows';
 import { useIndexedFilteredRows } from '@/entities/joined/selectors/useIndexedFilteredRows';
 import { useSyncFiltersWithUrl } from '@/features/filter/lib/useSyncFiltersWithUrl';
@@ -61,7 +61,7 @@ const DashboardPage = () => {
         justifyContent="flex-end"
         aria-label="데이터 새로고침 상태"
       >
-        <DataRefreshIndicator />
+        <DataRefreshWidget />
       </Box>
       <FilterSection />
 
