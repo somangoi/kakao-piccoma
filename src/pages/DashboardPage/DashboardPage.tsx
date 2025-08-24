@@ -1,17 +1,17 @@
 import { Box, Paper } from '@mui/material';
-import { EmptyState } from '@/shared/ui/EmptyState';
 import { DataRefreshWidget } from '@/widgets/DataRefreshWidget/DataRefreshWidget';
-import { useJoinedRows } from '@/entities/joined/useJoinedRows';
-import { useIndexedFilteredRows } from '@/features/filter/hooks/useIndexedFilteredRows';
-import { useSyncFiltersWithUrl } from '@/features/filter/hooks/useSyncFiltersWithUrl';
 import { TotalSummary } from '@/widgets/TotalSummary/TotalSummary';
 import { DetailedSummary } from '@/widgets/DetailedSummary/DetailedSummary';
 import { LineChartSection } from '@/widgets/LineChartSection/LineChartSection';
 import { PieChartSection } from '@/widgets/PieChartSection/PieChartSection';
 import { StackedBarChartSection } from '@/widgets/StackedBarChartSection/StackedBarChartSection';
 import { ProductTable } from '@/widgets/ProductTable/ProductTable';
-import PageLayout from '@/shared/ui/PageLayout';
 import FilterSection from '@/widgets/FilterSection/FilterSection';
+import { useIndexedFilteredRows } from '@/features/filter/hooks/useIndexedFilteredRows';
+import { useSyncFiltersWithUrl } from '@/features/filter/hooks/useSyncFiltersWithUrl';
+import { useJoinedRows } from '@/entities/joined/useJoinedRows';
+import PageLayout from '@/shared/ui/PageLayout';
+import { EmptyState } from '@/shared/ui/EmptyState';
 
 const DashboardPage = () => {
   useSyncFiltersWithUrl();
@@ -79,14 +79,14 @@ const DashboardPage = () => {
         aria-label="상세 통계 및 트렌드 차트"
       >
         <Box
-          component="aside"
+          component="article"
           sx={{ flex: 1, minWidth: '300px' }}
           aria-label="상세 통계"
         >
           <DetailedSummary filteredRows={filteredRows} isLoading={isLoading} />
         </Box>
         <Box
-          component="section"
+          component="article"
           sx={{ flex: 2, minWidth: '300px' }}
           aria-label="라인 차트"
         >
@@ -103,14 +103,14 @@ const DashboardPage = () => {
         aria-label="분포 차트"
       >
         <Box
-          component="section"
+          component="article"
           sx={{ flex: 1, minWidth: '300px' }}
           aria-label="파이 차트"
         >
           <PieChartSection filteredRows={filteredRows} isLoading={isLoading} />
         </Box>
         <Box
-          component="section"
+          component="article"
           sx={{ flex: 1, minWidth: '300px' }}
           aria-label="스택 바 차트"
         >
