@@ -69,6 +69,7 @@ export function useJoinedSales(products?: Product[]) {
     },
     enabled: !!products && products.length > 0,
     staleTime: 5 * 60 * 1000,
-    refetchIntervalInBackground: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: true,
   });
 }
