@@ -18,7 +18,6 @@ import {
   Box,
   Typography,
   Badge,
-  Tooltip,
   Skeleton,
 } from '@mui/material';
 import { ArrowUpward, ArrowDownward } from '@mui/icons-material';
@@ -183,10 +182,7 @@ export const ProductTable = ({
         filteredRowsCount={filteredRows.length}
         localFilteredRowsCount={localFilteredRows.length}
       />
-
-      {/* Sorting Controls */}
       <SortingControls sorting={sorting} clearAllSorting={clearAllSorting} />
-
       <TableContainer
         component={Paper}
         elevation={0}
@@ -211,73 +207,63 @@ export const ProductTable = ({
                     style={{ width: header.getSize() }}
                   >
                     {header.isPlaceholder ? null : (
-                      <Tooltip
-                        title={
-                          header.column.getCanSort()
-                            ? '클릭: 정렬 추가/변경'
-                            : ''
-                        }
-                        arrow
-                        placement="top"
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          ...(header.column.getCanSort() && {
+                            cursor: 'pointer',
+                          }),
+                        }}
+                        onClick={header.column.getToggleSortingHandler()}
                       >
-                        <Box
-                          sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            ...(header.column.getCanSort() && {
-                              cursor: 'pointer',
-                            }),
-                          }}
-                          onClick={header.column.getToggleSortingHandler()}
-                        >
-                          <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                            {flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                          </Typography>
-                          {header.column.getCanSort() && (
-                            <Box
-                              sx={{
-                                ml: 1,
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                              }}
-                            >
-                              {header.column.getIsSorted() ? (
-                                <Badge
-                                  badgeContent={
-                                    getSortIndex(header.column.id) + 1
-                                  }
-                                  color="primary"
-                                  sx={{
-                                    '& .MuiBadge-badge': {
-                                      fontSize: '0.6rem',
-                                      minWidth: '16px',
-                                      height: '16px',
-                                    },
-                                  }}
-                                >
-                                  {header.column.getIsSorted() === 'asc' ? (
-                                    <ArrowUpward
-                                      fontSize="small"
-                                      sx={{ color: 'primary.main' }}
-                                    />
-                                  ) : (
-                                    <ArrowDownward
-                                      fontSize="small"
-                                      sx={{ color: 'primary.main' }}
-                                    />
-                                  )}
-                                </Badge>
-                              ) : (
-                                <Box sx={{ width: 20, height: 20 }} />
-                              )}
-                            </Box>
+                        <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                          {flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
                           )}
-                        </Box>
-                      </Tooltip>
+                        </Typography>
+                        {header.column.getCanSort() && (
+                          <Box
+                            sx={{
+                              ml: 1,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                            }}
+                          >
+                            {header.column.getIsSorted() ? (
+                              <Badge
+                                badgeContent={
+                                  getSortIndex(header.column.id) + 1
+                                }
+                                color="primary"
+                                sx={{
+                                  '& .MuiBadge-badge': {
+                                    fontSize: '0.6rem',
+                                    minWidth: '16px',
+                                    height: '16px',
+                                  },
+                                }}
+                              >
+                                {header.column.getIsSorted() === 'asc' ? (
+                                  <ArrowUpward
+                                    fontSize="small"
+                                    sx={{ color: 'primary.main' }}
+                                  />
+                                ) : (
+                                  <ArrowDownward
+                                    fontSize="small"
+                                    sx={{ color: 'primary.main' }}
+                                  />
+                                )}
+                              </Badge>
+                            ) : (
+                              <Box sx={{ width: 20, height: 20 }} />
+                            )}
+                          </Box>
+                        )}
+                      </Box>
                     )}
                   </TableCell>
                 ))}
@@ -321,7 +307,7 @@ export const ProductTable = ({
                     textAlign: 'center',
                     py: 8,
                     color: 'text.secondary',
-                    height: '600px', // 테이블 최소 높이와 맞춤 (600px - 헤더/여백)
+                    height: '600px',
                     verticalAlign: 'middle',
                   }}
                 >
