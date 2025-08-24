@@ -2,7 +2,7 @@ import { Box, Paper } from '@mui/material';
 import { EmptyState } from '@/shared/ui/EmptyState';
 import { DataRefreshWidget } from '@/widgets/DataRefreshWidget/DataRefreshWidget';
 import { useJoinedRows } from '@/entities/joined/useJoinedRows';
-import { useIndexedFilteredRows } from '@/entities/joined/selectors/useIndexedFilteredRows';
+import { useIndexedFilteredRows } from '@/features/filter/hooks/useIndexedFilteredRows';
 import { useSyncFiltersWithUrl } from '@/features/filter/lib/useSyncFiltersWithUrl';
 import { TotalSummary } from '@/widgets/TotalSummary/TotalSummary';
 import { DetailedSummary } from '@/widgets/DetailedSummary/DetailedSummary';
