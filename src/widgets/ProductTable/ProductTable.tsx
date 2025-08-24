@@ -173,6 +173,9 @@ export const ProductTable = ({
 
   return (
     <Box sx={{ width: '100%' }}>
+      <Typography variant="h6" fontWeight={'bold'} gutterBottom>
+        작품 정보 테이블
+      </Typography>
       {/* Filter Section */}
       <FilterSection
         localFilters={localFilters}
