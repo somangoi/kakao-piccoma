@@ -15,7 +15,6 @@ export function joinSalesWithProducts(
     salesMap.get(s.id)!.push(s);
   }
 
-  console.log('salesMap', salesMap);
   return products.map((product) => ({
     ...product,
     series: salesMap.get(product.id) ?? [],
