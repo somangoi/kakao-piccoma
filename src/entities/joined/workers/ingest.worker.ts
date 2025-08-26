@@ -4,8 +4,8 @@ import type { Product } from '@/entities/product/model';
 import type { JoinedRow } from '@/entities/joined/model';
 
 type InMsg =
-  | { type: 'gzip-chunk'; chunk: ArrayBuffer | Uint8Array }
-  | { type: 'gzip-end'; products: Product[] };
+  | { type: 'stream-chunk'; chunk: ArrayBuffer | Uint8Array }
+  | { type: 'stream-end'; products: Product[] };
 
 type OutMsg =
   | { type: 'joined-rows'; payload: JoinedRow[] }
@@ -16,14 +16,14 @@ let chunks: Uint8Array[] = [];
 self.onmessage = async (e: MessageEvent<InMsg>) => {
   const msg = e.data;
 
-  if (msg.type === 'gzip-chunk') {
+  if (msg.type === 'stream-chunk') {
     const u8 =
       msg.chunk instanceof Uint8Array ? msg.chunk : new Uint8Array(msg.chunk);
     chunks.push(u8);
     return;
   }
 
-  if (msg.type === 'gzip-end') {
+  if (msg.type === 'stream-end') {
     try {
       // 1. 전체 청크 합치기
       const totalLength = chunks.reduce((sum, chunk) => sum + chunk.length, 0);

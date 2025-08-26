@@ -32,12 +32,15 @@ export function useJoinedSales(products?: Product[]) {
               const { done, value } = await reader.read();
               if (done) break;
               if (value) {
-                worker.postMessage({ type: 'gzip-chunk', chunk: value }, [
+                worker.postMessage({ type: 'stream-chunk', chunk: value }, [
                   value.buffer,
                 ]);
               }
             }
-            worker.postMessage({ type: 'gzip-end', products: products || [] });
+            worker.postMessage({
+              type: 'stream-end',
+              products: products || [],
+            });
           } catch (err) {
             reject(err);
           }
