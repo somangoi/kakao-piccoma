@@ -1,14 +1,6 @@
-import { adaptSalesDto } from '@/entities/sales/adapter';
 import type { Sales } from '@/entities/sales/model';
 import type { Product } from '@/entities/product/model';
 import type { JoinedRow } from '@/entities/joined/model';
-
-export function parseSalesJson(buffer: ArrayBuffer): Sales[] {
-  const decoded = new TextDecoder('utf-8').decode(new Uint8Array(buffer));
-  const raw = JSON.parse(decoded);
-
-  return raw.map(adaptSalesDto);
-}
 
 export function joinSalesWithProducts(
   sales: Sales[],
@@ -23,6 +15,7 @@ export function joinSalesWithProducts(
     salesMap.get(s.id)!.push(s);
   }
 
+  console.log('salesMap', salesMap);
   return products.map((product) => ({
     ...product,
     series: salesMap.get(product.id) ?? [],

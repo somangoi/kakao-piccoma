@@ -1,7 +1,8 @@
 /// <reference lib="webworker" />
-import { parseSalesJson, joinSalesWithProducts } from './worker-utils';
+import { joinSalesWithProducts } from './worker-utils';
 import type { Product } from '@/entities/product/model';
 import type { JoinedRow } from '@/entities/joined/model';
+import { adaptSalesDto } from '@/entities/sales/adapter';
 
 type InMsg =
   | { type: 'stream-chunk'; chunk: ArrayBuffer | Uint8Array }
@@ -25,21 +26,17 @@ self.onmessage = async (e: MessageEvent<InMsg>) => {
 
   if (msg.type === 'stream-end') {
     try {
-      // 1. 전체 청크 합치기
-      const totalLength = chunks.reduce((sum, chunk) => sum + chunk.length, 0);
-      const combined = new Uint8Array(totalLength);
-      let offset = 0;
-      for (const chunk of chunks) {
-        combined.set(chunk, offset);
-        offset += chunk.length;
-      }
+      // 1. 청크들을 문자열로 연결
+      const fullText = chunks
+        .map((chunk) => new TextDecoder().decode(chunk))
+        .join('');
 
-      // 2. 압축 해제 및 JSON 파싱
-      const buffer = combined.buffer;
-      const sales = parseSalesJson(buffer);
+      // 2. JSON 파싱 및 DTO 변환
+      const sales = JSON.parse(fullText);
+      const paredSales = sales.map(adaptSalesDto);
 
       // 3. products와 조인
-      const joinedRows = joinSalesWithProducts(sales, msg.products);
+      const joinedRows = joinSalesWithProducts(paredSales, msg.products);
 
       // 4. 결과 전송
       const out: OutMsg = { type: 'joined-rows', payload: joinedRows };
