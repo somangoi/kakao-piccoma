@@ -1,5 +1,5 @@
 import { Button, Box, Typography } from '@mui/material';
-import { Update as UpdateIcon } from '@mui/icons-material';
+import UpdateIcon from '@mui/icons-material/Update';
 import { useDataRefresh } from './hooks/useDataRefresh';
 
 interface DataRefreshWidgetProps {

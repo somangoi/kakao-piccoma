@@ -6,12 +6,10 @@ import {
   Grid,
   Skeleton,
 } from '@mui/material';
-import {
-  TrendingUp,
-  People,
-  ShoppingCart,
-  Category,
-} from '@mui/icons-material';
+import TrendingUp from '@mui/icons-material/TrendingUp';
+import People from '@mui/icons-material/People';
+import ShoppingCart from '@mui/icons-material/ShoppingCart';
+import Category from '@mui/icons-material/Category';
 import type { JoinedRowWithDerived } from '@/entities/joined/model';
 import { useTotalStats } from '@/entities/joined/selectors/useTotalStats';
 import type { ReactNode } from 'react';

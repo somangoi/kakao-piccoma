@@ -20,7 +20,8 @@ import {
   Badge,
   Skeleton,
 } from '@mui/material';
-import { ArrowUpward, ArrowDownward } from '@mui/icons-material';
+import ArrowUpward from '@mui/icons-material/ArrowUpward';
+import ArrowDownward from '@mui/icons-material/ArrowDownward';
 import type { JoinedRowWithDerived } from '@/entities/joined/model';
 import type { LocalFilters } from './types/LocalFilters';
 import { initialLocalFilters, applyLocalFilters } from './utils/localFilters';
