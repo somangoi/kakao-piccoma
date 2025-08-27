@@ -1,14 +1,18 @@
 import { Card, CardContent, useTheme, Skeleton, Box } from '@mui/material';
-import { useMemo } from 'react';
-import ReactECharts from 'echarts-for-react';
+import { useMemo, lazy, Suspense } from 'react';
 import type { JoinedRowWithDerived } from '@/entities/joined/model';
+
+const ReactECharts = lazy(() => import('echarts-for-react'));
 
 interface LineChartSectionProps {
   filteredRows: JoinedRowWithDerived[];
   isLoading?: boolean;
 }
 
-export const LineChartSection = ({ filteredRows, isLoading }: LineChartSectionProps) => {
+export const LineChartSection = ({
+  filteredRows,
+  isLoading,
+}: LineChartSectionProps) => {
   const theme = useTheme();
 
   const chartData = useMemo(() => {
@@ -137,12 +141,24 @@ export const LineChartSection = ({ filteredRows, isLoading }: LineChartSectionPr
     return (
       <Card elevation={0} sx={{ borderRadius: 2, height: '100%' }}>
         <CardContent sx={{ height: '100%', p: 2 }}>
-          <Box sx={{ minHeight: '300px', display: 'flex', flexDirection: 'column' }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+          <Box
+            sx={{
+              minHeight: '300px',
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            <Box
+              sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}
+            >
               <Skeleton variant="text" width={120} height={32} />
               <Skeleton variant="text" width={200} height={24} />
             </Box>
-            <Skeleton variant="rectangular" width="100%" sx={{ flexGrow: 1, minHeight: '250px' }} />
+            <Skeleton
+              variant="rectangular"
+              width="100%"
+              sx={{ flexGrow: 1, minHeight: '250px' }}
+            />
           </Box>
         </CardContent>
       </Card>
@@ -152,10 +168,20 @@ export const LineChartSection = ({ filteredRows, isLoading }: LineChartSectionPr
   return (
     <Card elevation={0} sx={{ borderRadius: 2, height: '100%' }}>
       <CardContent sx={{ height: '100%', p: 2 }}>
-        <ReactECharts
-          option={option}
-          style={{ height: '100%', width: '100%', minHeight: '300px' }}
-        />
+        <Suspense
+          fallback={
+            <Skeleton
+              variant="rectangular"
+              width="100%"
+              sx={{ minHeight: '300px' }}
+            />
+          }
+        >
+          <ReactECharts
+            option={option}
+            style={{ height: '100%', width: '100%', minHeight: '300px' }}
+          />
+        </Suspense>
       </CardContent>
     </Card>
   );

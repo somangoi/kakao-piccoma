@@ -11,11 +11,11 @@ import {
   Divider,
   Skeleton,
 } from '@mui/material';
-import { useState, useMemo } from 'react';
-import ReactECharts from 'echarts-for-react';
+import { useState, useMemo, lazy } from 'react';
 import type { JoinedRowWithDerived } from '@/entities/joined/model';
 import { useGenreStats } from '@/entities/joined/selectors/useGenreStats';
 import { useFilterStore } from '@/features/filter/model/useFilterStore';
+const ReactECharts = lazy(() => import('echarts-for-react'));
 
 interface PieChartSectionProps {
   filteredRows: JoinedRowWithDerived[];

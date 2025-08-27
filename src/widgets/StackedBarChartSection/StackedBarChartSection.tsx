@@ -7,9 +7,9 @@ import {
   useTheme,
   Skeleton,
 } from '@mui/material';
-import { useState, useMemo } from 'react';
-import ReactECharts from 'echarts-for-react';
+import { useState, useMemo, lazy } from 'react';
 import type { JoinedRowWithDerived } from '@/entities/joined/model';
+const ReactECharts = lazy(() => import('echarts-for-react'));
 
 interface StackedBarChartSectionProps {
   filteredRows: JoinedRowWithDerived[];
