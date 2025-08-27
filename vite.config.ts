@@ -16,4 +16,19 @@ export default defineConfig({
       '@/widgets': path.resolve(__dirname, './src/widgets'),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom'],
+          'mui-vendor': ['@mui/material'],
+          'mui-icons': ['@mui/icons-material'],
+          'charts-vendor': ['echarts', 'echarts-for-react'],
+          'utils-vendor': ['zustand', '@tanstack/react-query', 'fuse.js'],
+        },
+      },
+    },
+    target: 'es2020',
+    minify: 'esbuild',
+  },
 })
