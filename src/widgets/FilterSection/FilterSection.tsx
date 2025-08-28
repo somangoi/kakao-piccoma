@@ -1,6 +1,7 @@
 import { Box, Paper } from '@mui/material';
 import { GenreFilter } from '@/features/filter/ui/GenreFilter';
 import { TimeFilter } from '@/features/filter/ui/TimeFilter';
+import PublishersFilter from '@/features/filter/ui/PublishersFilter';
 
 const FilterSection = () => (
   <Paper
@@ -19,6 +20,7 @@ const FilterSection = () => (
     >
       <TimeFilter />
       <GenreFilter />
+      <PublishersFilter />
     </Box>
   </Paper>
 );

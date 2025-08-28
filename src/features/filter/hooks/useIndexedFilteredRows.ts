@@ -19,7 +19,7 @@ function calculateTotals(sales: Sales[]) {
 export const useIndexedFilteredRows = (
   joinedRows: JoinedRow[]
 ): JoinedRowWithDerived[] => {
-  const { startDate, endDate, genres } = useFilterStore();
+  const { startDate, endDate, genres, publishers } = useFilterStore();
 
   // 1. 인덱스 생성 (joinedRows가 변경될 때만)
   const dataIndex = useMemo(() => {
@@ -32,15 +32,24 @@ export const useIndexedFilteredRows = (
     if (!dataIndex) return [];
 
     // Step 1: 장르별 제품 필터링
-    const filteredProducts = dataIndex.getProductsByGenres(genres);
+    const filteredProductsByGenre = dataIndex.getProductsByGenres(genres);
 
-    // Step 2: 날짜별 매출 데이터 조회
+    // Step 2: 퍼블리셔별 제품 필터링 (퍼블리셔가 선택되지 않았으면 모든 제품 포함)
+    const filteredProductsByPublisher =
+      dataIndex.getProductsByPublishers(publishers);
+
+    // Step 4: 교집합 필터링
+    const filteredProducts = filteredProductsByGenre.filter((product) =>
+      filteredProductsByPublisher.includes(product)
+    );
+
+    // Step 3: 날짜별 매출 데이터 조회
     const salesByProduct =
       startDate && endDate
         ? dataIndex.getSalesByDateRange(startDate, endDate)
         : dataIndex.getAllSales();
 
-    // Step 3: 결과 조합
+    // Step 4: 결과 조합
     const result = filteredProducts.map((product) => {
       const filteredSeries = salesByProduct.get(product.id) || [];
       const derivedTotals = calculateTotals(filteredSeries);
@@ -51,7 +60,6 @@ export const useIndexedFilteredRows = (
         derivedTotals,
       };
     });
-
     return result;
-  }, [dataIndex, startDate, endDate, genres]);
+  }, [dataIndex, startDate, endDate, genres, publishers]);
 };

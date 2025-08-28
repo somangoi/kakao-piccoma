@@ -4,6 +4,7 @@ import type { Sales } from '@/entities/sales/model';
 export class SalesDataIndex {
   private productIndex = new Map<number, JoinedRow>();
   private genreIndex = new Map<string, JoinedRow[]>();
+  private publisherIndex = new Map<string, JoinedRow[]>();
   private dateIndex = new Map<
     string,
     Array<{ sale: Sales; productId: number }>
@@ -32,6 +33,12 @@ export class SalesDataIndex {
         }
         this.dateIndex.get(dateKey)!.push({ sale, productId: row.id });
       }
+
+      // 4. 퍼블리셔별 인덱스
+      if (!this.publisherIndex.has(row.publisher)) {
+        this.publisherIndex.set(row.publisher, []);
+      }
+      this.publisherIndex.get(row.publisher)!.push(row);
     }
   }
 
@@ -58,6 +65,25 @@ export class SalesDataIndex {
       }
     }
 
+    return result;
+  }
+
+  getProductsByPublishers(publishers: string[]): JoinedRow[] {
+    if (publishers.length === 0) {
+      return Array.from(this.productIndex.values());
+    }
+
+    const result: JoinedRow[] = [];
+    const seen = new Set<number>();
+    for (const publisher of publishers) {
+      const products = this.publisherIndex.get(publisher) || [];
+      for (const product of products) {
+        if (!seen.has(product.id)) {
+          seen.add(product.id);
+          result.push(product);
+        }
+      }
+    }
     return result;
   }
 
